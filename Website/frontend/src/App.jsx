@@ -1,14 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Barchart from "./components/Barchart"
 import data from "./components/data"
 
 function App() {
 
-  const [dataState, changeData] = useState(data);
+  const [dataState, changeData] = useState([]);
 
   const [yearVal, changeYear] = useState(1980);
   const [value, changeValue] = useState(0);
   const [addedText, setAddedText] = useState("Submit");
+
+  const [apiTest, setAPITest] = useState("");
 
   function yearInput(event) {
     changeYear(event.target.value);
@@ -37,6 +39,18 @@ function App() {
     }, 1000);
   }
 
+  useEffect(() => {
+    fetch("http://localhost:3001/testAPI")
+      .then((res) => res.text())
+      .then((res) => setAPITest(res));
+    fetch("http://localhost:3001/data")
+      .then((res) => res.text())
+      .then((res) => {
+        console.log(res);
+        changeData(JSON.parse(res));
+      });
+  }, [])
+
   return (
     <>
       <h1 className='text-center text-4xl my-4'>VASTly Hyperbolical</h1>
@@ -61,6 +75,10 @@ function App() {
               </div>
               
             </form>
+            <div>
+              Message from backend:
+              {` ${apiTest}`}
+            </div>
           </div>
 
         </div>
