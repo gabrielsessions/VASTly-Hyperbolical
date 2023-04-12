@@ -1,9 +1,7 @@
 import { TextInput, Label } from "flowbite-react";
 import { useState } from "react";
 
-export default function DateSelect() {
-
-  const [dateRange, setDateRange] = useState(['05/01/2015', '05/31/2016'])
+export default function DateSelect(props) {
 
   return (
     <>
@@ -21,7 +19,12 @@ export default function DateSelect() {
               id="startDate"
               type="text"
               sizing="sm"
-              value={dateRange[0]}
+              value={props.query.daySelect[0]}
+              onChange={(e) => props.setQuery((prev) => {
+                const copy = {...prev}
+                copy.daySelect[0] = e.target.value;
+                return copy;
+              })}
             />
           </div>
           <div className="my-4">
@@ -35,7 +38,12 @@ export default function DateSelect() {
               id="endDate"
               type="text"
               sizing="sm"
-              value={dateRange[1]}
+              value={props.query.daySelect[1]}
+              onChange={(e) => props.setQuery((prev) => {
+                const copy = {...prev}
+                copy.daySelect[1] = e.target.value;
+                return copy;
+              })}
             />
           </div>
         </div>

@@ -3,7 +3,6 @@ import { useState } from "react";
 
 
 export default function GateSelect(props) {
-  const [gate, setGate] = useState('');
 
   return (
     <>
@@ -19,8 +18,12 @@ export default function GateSelect(props) {
           id="gateName"
           type="text"
           sizing="md"
-          value={gate}
-          onChange={(e) => setGate(e.target.value)}
+          value={props.query.gatenameSelect}
+          onChange={(e) => props.setQuery((prev) => {
+            const copy = {...prev}
+            copy.gatenameSelect = e.target.value;
+            return copy;
+          })}
         />
       </div>
     </>

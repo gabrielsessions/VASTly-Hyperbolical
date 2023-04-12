@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const url = require('url');
 
 const { Pool, Client } = require("pg");
 const dotenv = require('dotenv');
@@ -62,8 +63,9 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/query", function (req, res, next) {
-    const queryParams = req.query;
-    res.send('Query!')
+    const url_parts = url.parse(req.url, true);
+    query(url_parts.query.sqlQuery)
+        .then((data) => res.send(data));
 });
 
 module.exports = router;

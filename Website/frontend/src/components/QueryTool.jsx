@@ -6,8 +6,6 @@ import { Button } from "flowbite-react";
 
 export default function QueryTool(props) {
 
-  //const attributes = props.query.attributes;
-
   return (
     <div>
       <div className="flex justify-center">
@@ -21,13 +19,13 @@ export default function QueryTool(props) {
         </div>
       </div>
       <div className="flex justify-center">
-        <CarIDSelect />
+        <CarIDSelect query={props.query} setQuery={props.setQuery} />
       </div>
       <div className="flex justify-center">
-        <GateSelect />
+        <GateSelect query={props.query} setQuery={props.setQuery} />
       </div>
       <div className="my-4 text-center">
-        <Button className="mx-auto">
+        <Button onClick={props.executeQuery} className="mx-auto">
           Query Database
         </Button>
       </div>

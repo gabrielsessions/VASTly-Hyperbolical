@@ -11,7 +11,7 @@ export default function SimpleTable(props) {
   return (
     <div className="mb-24">
       <h1 className="text-center text-2xl block">Database Query Results</h1>
-      <h3 className="text-center my-4">Query: SELECT * FROM sensor_data LIMIT 10;</h3>
+      <h3 className="text-center my-4">{props.displayedQuery}</h3>
       <br />
       <table className={props.data.length === 0 ? "hidden" : "ml-auto mr-auto border-black border text-center"}>
         <tr className="border border-black">
