@@ -1,7 +1,11 @@
 import { TextInput, Label } from "flowbite-react";
-import { useState } from "react";
 
-
+/**
+ * CarIDSelect Component
+ * Text input to filter by a Car ID
+ * TODO: Be able to filter by multiple Car IDs
+ * @param {*} props 
+ */
 export default function CarIDSelect(props) {
   return (
     <>

@@ -1,7 +1,11 @@
 import { TextInput, Label } from "flowbite-react";
-import { useState } from "react";
 
-
+/**
+ * GateSelect component
+ * Text input to filter by gate name
+ * TODO: Add a search feature to list gate names + autocomplete
+ * @param props  
+ */
 export default function GateSelect(props) {
 
   return (

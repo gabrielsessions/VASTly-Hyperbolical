@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-
+/**
+ * Attributes component
+ * A vertical set of checkboxes to select which columns to display
+ * @param {*} props  
+ */
 export default function Attributes(props) {
 
-
   // Flips the selection boolean of an attribute when it's clicked
-  
   const checkboxClick = (sqlName, newState) => {
     props.setQuery((prev) => {
       // Make a copy of the previous query object
@@ -26,9 +27,10 @@ export default function Attributes(props) {
   
 
   return (
-    <div className="block mr-12 -mb-2">
+    <div className="block lg:mr-12 -mb-2">
       <h3 className="mb-4 font-semibold text-gray-900 dark:text-white block text-center">Attributes</h3>
       <ul className="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        {/* Display attributes present in the attributes array as checkboxes */}
         {
           props.query.attributes.map((elem, index) => {
             return (

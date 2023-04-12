@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import Barchart from "./Barchart"
-import data from "./data"
 
 export default function DynamicBarchart() {
   const [dataState, changeData] = useState([]);

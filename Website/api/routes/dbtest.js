@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
+
 const url = require('url');
 
 const { Pool, Client } = require("pg");
 const dotenv = require('dotenv');
 
+// Config and fetch .env file
 dotenv.config();
 
+// Connect to Postgres server using these credentials
 const credentials = {
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -15,8 +18,8 @@ const credentials = {
     port: process.env.DB_PORT,
 };
 
-// Connect with a connection pool.
-
+// Connect with a connection pool
+// Sample SQL command, just gets current time
 async function poolDemo() {
     const pool = new Pool(credentials);
     const now = await pool.query("SELECT NOW()");
@@ -25,8 +28,7 @@ async function poolDemo() {
     return now;
 }
 
-// Connect with a client.
-
+// Connect with a client
 async function clientDemo() {
     const client = new Client(credentials);
     await client.connect();
@@ -37,25 +39,20 @@ async function clientDemo() {
 }
 
 
-async function test() {
-    const poolResult = await poolDemo();
-    console.log("Time with pool: " + poolResult.rows[0]["now"]);
-
-    const clientResult = await clientDemo();
-    console.log("Time with client: " + clientResult.rows[0]["now"]);
-}
-
+// Queries the database for the first 10 entries of the sensor_data table
 async function getSamples() {
     const pool = new Pool(credentials);
     const text = `SELECT * FROM sensor_data LIMIT 10`;
     return pool.query(text);
 }
 
+// Runs a query and returns the result
+// Parameters: sqlQuery - string 
+// TODO: prevent SQL injection
 async function query(sqlQuery) {
     const pool = new Pool(credentials);
     return pool.query(sqlQuery);
 }
-
 
 router.get("/", function (req, res, next) {
     getSamples()

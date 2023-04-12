@@ -38,15 +38,6 @@ export default function QueryCarID() {
     cartypeSelect: ""
   });
 
-  function queryDB() {
-    fetch('http://localhost:3001/dbtest?' + new URLSearchParams({
-      carid: 'value',
-      gatename: 'stuff',
-    }))
-      .then((res) => res.text())
-      .then((res) => console.log(res))
-  }
-
   // Selects appropriate columns based on checked off inputs
   function selectCols(attributes) {
     let selectStatement = "SELECT ";
@@ -71,6 +62,7 @@ export default function QueryCarID() {
 
   }
 
+  // Geneates FROM clause based on which attributes were selected
   function fromClause(attributes) {
     //const table1 = ["cartype"];
     const table2 = ["timestamp", "gatename"];
@@ -114,6 +106,7 @@ export default function QueryCarID() {
     return "";
   }
 
+  // WHERE clauses are generated based on which options were selected in the form
   function filterCols(query, curQuery) {
     const carIncluded = curQuery.includes("car_data");
     const sensorIncluded = curQuery.includes("sensor_data");
@@ -129,10 +122,10 @@ export default function QueryCarID() {
       whereStatement += `cartype='${query.cartypeSelect}' AND `;
     }
     if (query.daySelect[0] !== "" && sensorIncluded) {
-      whereStatement += `timestamp>'${query.daySelect[0]}' AND `;
+      whereStatement += `timestamp>='${query.daySelect[0]}' AND `;
     }
     if (query.daySelect[1] !== "" && sensorIncluded) {
-      whereStatement += `timestamp<'${query.daySelect[1]}' AND `;
+      whereStatement += `timestamp<='${query.daySelect[1]}' AND `;
     }
 
     if (whereStatement === "WHERE ") {
@@ -142,6 +135,8 @@ export default function QueryCarID() {
     return (whereStatement.substring(0, whereStatement.length - 4));
   }
 
+  // Generates a SQL statement based on the query selections
+  // then sends it to the backend. Renders response in a table.
   function executeQuery() {
     let sqlQuery = selectCols(query.attributes);
     sqlQuery += fromClause(query.attributes);
@@ -156,11 +151,6 @@ export default function QueryCarID() {
     }))
       .then((res) => res.json())
       .then((res) => renderTable(res));
-
-    //console.log(sqlQuery);
-
-
-
   }
 
   function renderTable(res) {

@@ -1,11 +1,15 @@
 import { TextInput, Label } from "flowbite-react";
-import { useState } from "react";
 
+/**
+ * DateSelect Component
+ * Two text inputs where users can enter start and end dates for their query
+ * @param props
+ */
 export default function DateSelect(props) {
 
   return (
     <>
-      <div className="flex flex-col ml-12">
+      <div className="flex flex-col lg:ml-12">
         <div className="text-center">
           <div className="my-4">
             <div className="mb-2">
