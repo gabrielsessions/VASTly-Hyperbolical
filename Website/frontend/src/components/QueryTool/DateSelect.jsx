@@ -22,7 +22,7 @@ export default function DateSelect(props) {
             <TextInput
               id="startDate"
               type="text"
-              sizing="sm"
+              sizing="md"
               value={props.query.daySelect[0]}
               onChange={(e) => props.setQuery((prev) => {
                 const copy = {...prev}
@@ -41,7 +41,7 @@ export default function DateSelect(props) {
             <TextInput
               id="endDate"
               type="text"
-              sizing="sm"
+              sizing="md"
               value={props.query.daySelect[1]}
               onChange={(e) => props.setQuery((prev) => {
                 const copy = {...prev}

@@ -2,7 +2,7 @@ import QueryTool from "./QueryTool";
 import SimpleTable from "./SimpleTable";
 import { useEffect, useState } from "react";
 
-export default function QueryCarID() {
+export default function Query() {
   // States for the data in the display table
   const [data, setData] = useState([]);
   const [fields, setFields] = useState([]);
@@ -112,26 +112,38 @@ export default function QueryCarID() {
     const sensorIncluded = curQuery.includes("sensor_data");
 
     let whereStatement = "WHERE ";
+
+    // Car ID
     if (query.caridSelect !== "") {
       whereStatement += `carid='${query.caridSelect}' AND `;
     }
+
+    // Gate Name
     if (query.gatenameSelect !== "" && sensorIncluded) {
       whereStatement += `gatename='${query.gatenameSelect}' AND `;
     }
+
+    // Car Type
     if (query.cartypeSelect !== "" && carIncluded) {
       whereStatement += `cartype='${query.cartypeSelect}' AND `;
     }
+
+    // Start Date
     if (query.daySelect[0] !== "" && sensorIncluded) {
       whereStatement += `timestamp>='${query.daySelect[0]}' AND `;
     }
+
+    // End Date
     if (query.daySelect[1] !== "" && sensorIncluded) {
       whereStatement += `timestamp<='${query.daySelect[1]}' AND `;
     }
 
+    // If no filters, don't include WHERE in the query
     if (whereStatement === "WHERE ") {
       return "";
     }
 
+    // Remove the "AND " from the end of the string
     return (whereStatement.substring(0, whereStatement.length - 4));
   }
 

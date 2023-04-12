@@ -1,4 +1,4 @@
-import QueryCarID from "./components/QueryCarID"
+import Query from "./components/Query"
 
 /**
  * App Component
@@ -9,7 +9,7 @@ import QueryCarID from "./components/QueryCarID"
 function App() {
   return (
     <div>
-      <QueryCarID />
+      <Query />
     </div>
   )
 }

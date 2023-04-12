@@ -1,6 +1,7 @@
 import Attributes from "./QueryTool/Attributes";
 import DateSelect from "./QueryTool/DateSelect";
 import CarIDSelect from "./QueryTool/CarIDSelect";
+import CarTypeSelect from "./QueryTool/CarTypeSelect";
 import GateSelect from "./QueryTool/GateSelect";
 import { Button } from "flowbite-react";
 
@@ -30,6 +31,11 @@ export default function QueryTool(props) {
       {/* Car ID Filter */}
       <div className="flex justify-center">
         <CarIDSelect query={props.query} setQuery={props.setQuery} />
+      </div>
+
+      {/* Car ID Filter */}
+      <div className="flex justify-center">
+        <CarTypeSelect query={props.query} setQuery={props.setQuery} />
       </div>
 
       {/* Gate Name Filter */}
