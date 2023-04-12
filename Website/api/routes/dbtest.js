@@ -50,11 +50,20 @@ async function getSamples() {
     return pool.query(text);
 }
 
+async function query(sqlQuery) {
+    const pool = new Pool(credentials);
+    return pool.query(sqlQuery);
+}
+
 
 router.get("/", function (req, res, next) {
     getSamples()
-        .then((data) => res.send(data))
+        .then((data) => res.send(data));
+});
 
+router.get("/query", function (req, res, next) {
+    const queryParams = req.query;
+    res.send('Query!')
 });
 
 module.exports = router;
