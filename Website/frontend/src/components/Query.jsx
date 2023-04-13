@@ -154,7 +154,7 @@ export default function Query() {
     sqlQuery += fromClause(query.attributes);
     sqlQuery += joinTables(query.attributes);
     sqlQuery += filterCols(query, sqlQuery);
-    sqlQuery += "LIMIT 10;"
+    sqlQuery += "LIMIT 20;"
 
     setDisplayedQuery(sqlQuery);
 
