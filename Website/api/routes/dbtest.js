@@ -42,7 +42,7 @@ async function clientDemo() {
 // Queries the database for the first 10 entries of the sensor_data table
 async function getSamples() {
     const pool = new Pool(credentials);
-    const text = `SELECT * FROM sensor_data LIMIT 10`;
+    const text = `SELECT * FROM sensor_data LIMIT 10;`;
     return pool.query(text);
 }
 
