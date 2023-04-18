@@ -1,9 +1,7 @@
 import Attributes from "./QueryTool/Attributes";
 import DateSelect from "./QueryTool/DateSelect";
-import CarIDSelect from "./QueryTool/CarIDSelect";
-import CarTypeSelect from "./QueryTool/CarTypeSelect";
-import GateSelect from "./QueryTool/GateSelect";
 import { Button } from "flowbite-react";
+import TextInputFilter from "./QueryTool/TextInputFilter";
 
 /**
  * Query Tool
@@ -14,6 +12,14 @@ import { Button } from "flowbite-react";
  */
 
 export default function QueryTool(props) {
+  const modifyQuery = (parameter, event) => {
+    props.setQuery((prev) => {
+      const copy = { ...prev }
+      copy[parameter] = event.target.value;
+      return copy;
+    })
+  }
+
   return (
     <div>
       {/* Two columns: attribute selection on the left, data range on the right*/}
@@ -30,17 +36,30 @@ export default function QueryTool(props) {
 
       {/* Car ID Filter */}
       <div className="flex justify-center">
-        <CarIDSelect query={props.query} setQuery={props.setQuery} />
+        {/*<CarIDSelect query={props.query} setQuery={props.setQuery} />*/}
+        <TextInputFilter
+          label={"Car ID"}
+          value={props.query.caridSelect}
+          onChange={(e) => modifyQuery("caridSelect", e)}
+        />
       </div>
 
-      {/* Car ID Filter */}
+      {/* Car Type Filter */}
       <div className="flex justify-center">
-        <CarTypeSelect query={props.query} setQuery={props.setQuery} />
+        <TextInputFilter
+          label={"Car Type"}
+          value={props.query.cartypeSelect}
+          onChange={(e) => modifyQuery("cartypeSelect", e)}
+        />
       </div>
 
       {/* Gate Name Filter */}
       <div className="flex justify-center">
-        <GateSelect query={props.query} setQuery={props.setQuery} />
+        <TextInputFilter
+          label={"Gate Name"}
+          value={props.query.gatenameSelect}
+          onChange={(e) => modifyQuery("gatenameSelect", e)}
+        />
       </div>
 
       {/* Button to submit query to the backend */}
@@ -49,7 +68,7 @@ export default function QueryTool(props) {
           Query Database
         </Button>
       </div>
-      
+
     </div>
   )
 }
