@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.analytics-system-box {
+  height: 50vh;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 50%;
+  min-width: 300px;
+}

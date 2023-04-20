@@ -1,4 +1,5 @@
 import Query from "./components/Query"
+import AnalyticsSystem from "./components/AnalyticsSystem";
 
 /**
  * App Component
@@ -8,8 +9,10 @@ import Query from "./components/Query"
 
 function App() {
   return (
-    <div>
-      <Query />
+    <div className="min-h-screen max-h-screen">
+      {/* <Query /> */}
+      <AnalyticsSystem />
+      
     </div>
   )
 }
