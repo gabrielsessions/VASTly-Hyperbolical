@@ -11,7 +11,7 @@ const data = [{x: [1, 3, 4, 5], y: [3, 12, 1, 4], type: 'line'}];
 export default function VehicleMap() {
   return (
     <div>
-      <div>Map!</div>
+      <h1 className="text-center text-2xl my-6">Map Goes Here!</h1>
     </div>
   )
 

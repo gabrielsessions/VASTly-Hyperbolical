@@ -7,34 +7,40 @@ import DataTable from "./AnalyticsSystem/DataTable";
 
 export default function AnalyticsSystem() {
 
-  const analyticsComponentClass = "analytics-system-box border";
+  const analyticsComponentClass = "border";
   const [data, setData] = useState({})
 
   // Fetch default data from server (first 10 entries)
-  useEffect(() => {
-    fetch("http://localhost:3001/dbtest")
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res);
-      });
-  }, [])
-
 
   return (
-    <div className="flex flex-wrap">
-      <div className={analyticsComponentClass}>
-        <VehicleMap />
+    <div className="min-h-screen max-h-screen">
+      <div className="md:grid md:grid-cols-2">
+        <div>
+          <div className={analyticsComponentClass}>
+            <VehicleMap />
+          </div>
+        </div>
+        <div>
+          <div className={analyticsComponentClass}>
+            <ClassificationPlot />
+          </div>
+        </div>
+
       </div>
-      <div className={analyticsComponentClass}>
-        <ClassificationPlot />
+      
+    <div className="md:grid md:grid-cols-2">
+      <div>
+        <div className={analyticsComponentClass}>
+          <DataTable />
+        </div>
       </div>
-      <div className={analyticsComponentClass}>
-        <DataTable data={data} />
-      </div>
-      <div className={analyticsComponentClass}>
-        <Timeline />
+      <div>
+        <div className={analyticsComponentClass}>
+          <Timeline />
+        </div>
       </div>
 
+    </div>
     </div>
   )
 }
