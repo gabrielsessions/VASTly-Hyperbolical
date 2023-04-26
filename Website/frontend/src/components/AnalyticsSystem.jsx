@@ -8,7 +8,7 @@ import DataTable from "./AnalyticsSystem/DataTable";
 export default function AnalyticsSystem() {
 
   const analyticsComponentClass = "analytics-system-box border";
-  const [data, setData] = useState([])
+  const [data, setData] = useState({})
 
   // Fetch default data from server (first 10 entries)
   useEffect(() => {
