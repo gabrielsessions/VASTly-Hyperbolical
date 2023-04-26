@@ -1,10 +1,15 @@
 // Import Stuff Here!
 
-
 export default function ClassificationPlot() {
-  return (
-    <div>
-        <h1 className="text-center text-2xl my-6">TSNE Plot Goes Here!</h1>
-    </div>
-  )
+  const imagePath = 'public\\sample_TSNE.png';
+    return (
+        <div className="analytics-system-box border">
+          <div className="flex items">
+              <img src={imagePath} alt="why no t-SNE??" className="max-w-full" />
+              <div className="w-1/8 float-right">
+                <h1>Clusters toggles go here</h1>
+              </div>
+          </div>
+        </div>
+    )
 }
