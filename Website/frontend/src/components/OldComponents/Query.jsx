@@ -1,5 +1,5 @@
 import QueryTool from "./QueryTool";
-import SimpleTable from "./SimpleTable";
+import SimpleTable from "../SimpleTable";
 import { useEffect, useState } from "react";
 
 export default function Query() {
