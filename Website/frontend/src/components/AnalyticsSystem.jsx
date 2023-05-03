@@ -24,24 +24,26 @@ export default function AnalyticsSystem() {
     fields: []
   });
 
-  function executeQuery(query) {
+  function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
     }))
       .then((res) => res.json())
       .then((res) => {
-        setGraphQuery({
-          sqlQuery: query,
-          data: res.rows,
-          fields: res.fields
-        })
-      });
+        callback(res);
+      })
   }
 
 
   useEffect(() => {
     const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
-    executeQuery(initGraphQuery);
+    executeQuery(initGraphQuery, (res) => {
+      setGraphQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      });
+    });
   }, [])
 
 
