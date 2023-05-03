@@ -23,7 +23,7 @@ export default function AnalyticsSystem() {
     data: [],
     fields: []
   });
-
+  
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
@@ -44,6 +44,18 @@ export default function AnalyticsSystem() {
         fields: res.fields
       });
     });
+
+    const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 10;";
+    executeQuery(initTSNEQuery, (res) => {
+      setTSNEQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      });
+    });
+    
+
+
   }, [])
 
 
@@ -70,7 +82,7 @@ export default function AnalyticsSystem() {
       <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable />
+            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={tsneQuery} executeQuery={executeQuery}/>
           </div>
         </div>
         <div>
