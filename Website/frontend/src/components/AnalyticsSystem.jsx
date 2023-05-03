@@ -25,13 +25,23 @@ export default function AnalyticsSystem() {
   });
 
 
-  useState.data
-  useState.setData
-  setData((prev) => {
-    const newData = { ...prev };
-    newData.sqlQuery = "something";
-    return newData
-  })
+  useEffect(() => {
+    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
+    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
+      sqlQuery: initGraphQuery
+    }))
+      .then((res) => res.json())
+      .then((res) => {
+        setGraphQuery({
+          sqlQuery: initGraphQuery,
+          data: res.rows,
+          fields: res.fields
+        })
+      });
+  }, [])
+
+
+
 
   // Fetch default data from server (first 10 entries)
 
@@ -40,7 +50,7 @@ export default function AnalyticsSystem() {
       <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
-            <VehicleMap />
+            <VehicleMap graphQuery={graphQuery} />
           </div>
         </div>
         <div>
