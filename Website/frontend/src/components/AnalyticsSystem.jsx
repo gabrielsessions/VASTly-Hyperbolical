@@ -30,8 +30,13 @@ export default function AnalyticsSystem() {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: initGraphQuery
     }))
-      .then((res) => res.json())
       .then((res) => {
+        console.log(res);
+        return res.json()
+        
+      })
+      .then((res) => {
+        console.log(res)
         setGraphQuery({
           sqlQuery: initGraphQuery,
           data: res.rows,
