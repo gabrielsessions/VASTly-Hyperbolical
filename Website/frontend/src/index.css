@@ -8,4 +8,13 @@
   flex-shrink: 1;
   flex-basis: 50%;
   min-width: 300px;
+  padding: 10px 10px 10px 10px;
+}
+
+svg {
+  background: #fff;
+  overflow: visible;
+  display: block;
+  width: 90%;
+  height: 90%;
 }
