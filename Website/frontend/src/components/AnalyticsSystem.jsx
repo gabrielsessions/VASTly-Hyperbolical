@@ -8,7 +8,30 @@ import DataTable from "./AnalyticsSystem/DataTable";
 export default function AnalyticsSystem() {
 
   const analyticsComponentClass = "border";
-  const [data, setData] = useState({})
+
+  // global data variable:
+  // 2 Queries one for graph/table, one for tsne
+
+  const [tsneQuery, setTSNEQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+  const [graphQuery, setGraphQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+
+  useState.data
+  useState.setData
+  setData((prev) => {
+    const newData = { ...prev };
+    newData.sqlQuery = "something";
+    return newData
+  })
 
   // Fetch default data from server (first 10 entries)
 
@@ -27,20 +50,20 @@ export default function AnalyticsSystem() {
         </div>
 
       </div>
-      
-    <div className="md:grid md:grid-cols-2">
-      <div>
-        <div className={analyticsComponentClass}>
-          <DataTable />
-        </div>
-      </div>
-      <div>
-        <div className={analyticsComponentClass}>
-          <Timeline />
-        </div>
-      </div>
 
-    </div>
+      <div className="md:grid md:grid-cols-2">
+        <div>
+          <div className={analyticsComponentClass}>
+            <DataTable />
+          </div>
+        </div>
+        <div>
+          <div className={analyticsComponentClass}>
+            <Timeline />
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }
