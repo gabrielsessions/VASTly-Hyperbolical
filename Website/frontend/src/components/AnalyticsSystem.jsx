@@ -7,21 +7,59 @@ import DataTable from "./AnalyticsSystem/DataTable";
 
 export default function AnalyticsSystem() {
 
-  const analyticsComponentClass = "analytics-system-box border";
+  const analyticsComponentClass = "border";
+
+  // global data variable:
+  // 2 Queries one for graph/table, one for tsne
+
+  const [TSNEQuery, setTSNEQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+  const [graphQuery, setGraphQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+  useEffect(() => {
+    const initTSNEQuery = "SELECT * FROM car_data;";
+    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
+      sqlQuery: initTSNEQuery
+    }))
+      .then((res) => {
+        console.log(res);
+        return res.json()
+       
+      })
+      .then((res) => {
+        console.log(res)
+        setTSNEQuery({
+          sqlQuery: initTSNEQuery,
+          data: res.rows,
+          fields: res.fields
+        })
+      });
+  }, [])
+
+  // Fetch default data from server (first 10 entries)
 
   return (
-    <div className="flex flex-wrap">
-      <div className={analyticsComponentClass}>
-        <VehicleMap />
-      </div>
-      <div className={analyticsComponentClass}>
-        <ClassificationPlot />
-      </div>
-      <div className={analyticsComponentClass}>
-        <DataTable />
-      </div>
-      <div className={analyticsComponentClass}>
-        <Timeline />
+    <div className="min-h-screen max-h-screen">
+      <div className="md:grid md:grid-cols-2">
+        <div>
+          <div className={analyticsComponentClass}>
+            <VehicleMap />
+          </div>
+        </div>
+        <div>
+          <div className={analyticsComponentClass}>
+            <ClassificationPlot TSNEQuery={TSNEQuery}/>
+          </div>
+        </div>
+
       </div>
 
     </div>
