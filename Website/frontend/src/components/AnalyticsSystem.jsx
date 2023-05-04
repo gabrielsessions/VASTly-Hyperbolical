@@ -75,19 +75,6 @@ export default function AnalyticsSystem() {
         </div>
       </div>
 
-      <div className="md:grid md:grid-cols-2">
-        <div>
-          <div className={analyticsComponentClass}>
-            <DataTable />
-          </div>
-        </div>
-        <div>
-          <div className={analyticsComponentClass}>
-            <Timeline />
-          </div>
-        </div>
-
-      </div>
     </div>
   )
 }
