@@ -12,7 +12,8 @@ export default function AnalyticsSystem() {
   // global data variable:
   // 2 Queries one for graph/table, one for tsne
 
-  const [tsneQuery, setTSNEQuery] = useState({
+
+  const [TSNEQuery, setTSNEQuery] = useState({
     sqlQuery: "",
     data: [],
     fields: []
@@ -27,24 +28,29 @@ export default function AnalyticsSystem() {
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
+
+  useEffect(() => {
+    const initTSNEQuery = "SELECT * FROM car_data;";
+    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
+      sqlQuery: initTSNEQuery
+
     }))
       .then((res) => {
         console.log(res);
         return res.json()
-        
+
+       
       })
       .then((res) => {
         console.log(res)
-        setGraphQuery({
-          sqlQuery: initGraphQuery,
+        setTSNEQuery({
+          sqlQuery: initTSNEQuery,
+          
           data: res.rows,
           fields: res.fields
         })
       });
-    });
   }, [])
-
-
 
 
   // Fetch default data from server (first 10 entries)
@@ -59,10 +65,20 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <ClassificationPlot />
+
+            <ClassificationPlot TSNEQuery={TSNEQuery}/>
           </div>
         </div>
-
+        <div>
+          <div className={analyticsComponentClass}>
+            <DataTable/>
+          </div>
+        </div>
+        <div>
+          <div className={analyticsComponentClass}>
+            <Timeline/>
+          </div>
+        </div>
       </div>
 
       <div className="md:grid md:grid-cols-2">
