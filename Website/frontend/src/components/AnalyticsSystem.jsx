@@ -24,28 +24,17 @@ export default function AnalyticsSystem() {
     data: [],
     fields: []
   });
-
-
-
-  useEffect(() => {
-    const initTSNEQuery = "SELECT * FROM car_data;";
-    executeQuery(initTSNEQuery, (res) => {
-      setTSNEQuery({
-        sqlQuery: initTSNEQuery,
-        data: res.rows,
-        fields: res.fields
-      })
-    })
-  }, [])
-
+  
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
     }))
       .then((res) => res.json())
-      .then((res) => callback(res))
-
+      .then((res) => {
+        callback(res);
+      })
   }
+
 
   useEffect(() => {
     const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
@@ -58,6 +47,7 @@ export default function AnalyticsSystem() {
     });
 
     const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
+    //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
@@ -65,11 +55,8 @@ export default function AnalyticsSystem() {
         fields: res.fields
       });
     });
-    
 
-
-  }, [])
-
+}, [])
 
   // Fetch default data from server (first 10 entries)
 
@@ -89,7 +76,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={tsneQuery} executeQuery={executeQuery}/>
+            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={TSNEQuery} executeQuery={executeQuery}/>
           </div>
         </div>
         <div>
