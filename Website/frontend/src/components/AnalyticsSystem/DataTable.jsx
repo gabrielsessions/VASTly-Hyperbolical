@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 */
 
 const fields = [ 
-  'column1', 'column2', 'column3', 'column4'
+  'timestamp', 'carid', 'gatename' 
  ];
 
 /** dummy data - key matches field, values are json objects 
@@ -53,37 +53,40 @@ const data = [
 
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState([]);
+  const [selectedRowData, setSelectedRowData] = useState("hi");
 
-  const getSelectedRowwValues = selectedRow => {
-    setSelectedRowData({ ...selectedRow.values });
+  const getChosenRowData = selectedRow => {
+    setSelectedRowData({selectedRow });
   };
       
-  var queryTemplate = "SELECT sensor.gate-name, sensor.Timestamp, sensor.car-id " + 
-    "FROM Lekagul_Sensor_Data AS sensor" + 
-    "WHERE sensor.car-id = setSelectedRowData" + 
-    "ORDER BY sensor.car-id, sensor.TimeStamp DESC"
+  var queryTemplate = "SELECT sensor.gatename, sensor.Timestamp, sensor.carid " + 
+    "FROM sensor_data AS sensor" + 
+    "WHERE sensor.carid = setSelectedRowData" + 
+    "ORDER BY sensor.carid, sensor.TimeStamp DESC"
 
-  var dummyData = "SELECT * " + 
-  "FROM Lekagul_Sensor_Data AS sensor" + 
-  "LIMIT 10"
+  var dummyData = "SELECT * FROM sensor_data AS sensor LIMIT 10"
 
   function getResult(res) {
     props.setTSNEQuery({
-      sqlQuery: query,
+      sqlQuery: dummyData,
       data: res.rows,
       fields: res.fields
+      
     });
   }
 
   /** define new function, use it as callback to execute theory */
-  props.executeQuery(dummyData, getResult)
+  useEffect(() => {
+    props.executeQuery(dummyData, getResult);
+  }, [])
 
   return (
     <div>
         <h1 className="text-center text-2xl my-6">Data Table Goes Here!</h1> 
 
-         <SimpleTable data = {data} fields = {fields} ></SimpleTable>
+        <p className="text-center text-1xl my-2"> {selectedRowData}</p>
+
+         <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData}></SimpleTable>
             
     </div>
   )

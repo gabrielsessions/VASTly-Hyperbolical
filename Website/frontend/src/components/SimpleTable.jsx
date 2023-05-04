@@ -36,7 +36,7 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr onclick={() => props.setSelectedRowData(elem[carid])} key={index} className="hover:bg-gray-200">
+                  <tr onClick={() => props.getChosenRowData(elem["carid"])} key={index} className="hover:bg-gray-200">
                     {
                       props.fields.map((rowElem, colIndex) => {
                         // Make timestamps readable

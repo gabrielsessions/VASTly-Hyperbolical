@@ -39,7 +39,7 @@ export default function AnalyticsSystem() {
     const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
     executeQuery(initGraphQuery, (res) => {
       setGraphQuery({
-        sqlQuery: query,
+        sqlQuery: initGraphQuery,
         data: res.rows,
         fields: res.fields
       });
@@ -48,7 +48,7 @@ export default function AnalyticsSystem() {
     const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 10;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
-        sqlQuery: query,
+        sqlQuery: initTSNEQuery,
         data: res.rows,
         fields: res.fields
       });
