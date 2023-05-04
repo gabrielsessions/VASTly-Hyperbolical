@@ -54,30 +54,37 @@ export default function ClassificationPlot(props) {
     var myColor = scaleSequential()
     .domain([-1,18])
     .interpolator(interpolateRainbow);
-    console.log(data)
+
+    var determineDotSize = scaleLinear()
+      .domain([0, 18708])
+      .range([50,5])
+
+      var determineDotOpacity = scaleLinear()
+      .domain([0, 18708])
+      .range([.8,.2])
 
     function determineDotShape(value){
             
       if (value.cartype=="1"){
-          return symbol().size(50).type(symbolCircle)()
+          return symbol().size(determineDotSize(data.length)).type(symbolCircle)()
       }
       else if (value.cartype=="2"){
-        return symbol().size(50).type(symbolCross)()
+        return symbol().size(determineDotSize(data.length)).type(symbolCross)()
       }
       else if (value.cartype=="2P"){
-        return symbol().size(50).type(symbolDiamond)()
+        return symbol().size(determineDotSize(data.length)).type(symbolDiamond)()
       }
       else if (value.cartype=="3"){
-        return symbol().size(50).type(symbolSquare)()
+        return symbol().size(determineDotSize(data.length)).type(symbolSquare)()
       }
       else if (value.cartype=="4"){
-        return symbol().size(50).type(symbolStar)()
+        return symbol().size(determineDotSize(data.length)).type(symbolStar)()
       }
       else if (value.cartype=="5"){
-        return symbol().size(50).type(symbolTriangle)()
+        return symbol().size(determineDotSize(data.length)).type(symbolTriangle)()
       }
       else if (value.cartype=="6"){
-        return symbol().size(50).type(symbolWye)()
+        return symbol().size(determineDotSize(data.length)).type(symbolWye)()
       }
     }
 
@@ -99,12 +106,12 @@ export default function ClassificationPlot(props) {
       .selectAll(".dot")
       .data(data)
       .join(
-        enter =>{console.log("enter");
+        enter =>{console.log(data);console.log(determineDotSize(data.length));
         return enter.append("path")
           .attr("class", "dot")
-          .attr("opacity", 0.2)
+          .attr("opacity", determineDotOpacity(data.length))
           .attr("stroke","black")
-          .attr("stroke-opacity", 0.2)
+          .attr("stroke-opacity", 0)
           .attr("r", 1)
           .attr('d', value => determineDotShape(value))
           .attr("cx", value => xScale(value.xcoord))
@@ -113,9 +120,9 @@ export default function ClassificationPlot(props) {
           .attr('fill', value => { return myColor(value.cluster)})},
         update => update.attr("class", "updated")
           .transition()
-          .attr("opacity", 0.2)
+          .attr("opacity", determineDotOpacity(data.length))
           .attr("stroke","black")
-          .attr("stroke-opacity", 0.2)
+          .attr("stroke-opacity", 0)
           .attr("r", 1)
           .attr('d', value => determineDotShape(value))
           .attr("cx", value => xScale(value.xcoord))
@@ -139,17 +146,18 @@ return (
     </div>
 
     <div className="scatterplot">
-    <div className = "legend" id="clusters">
-      <label><input type="checkbox" value="-1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>unclustered</label><br />
-      <label><input type="checkbox" value="0" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>0</label><br />
-      <label><input type="checkbox" value="1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>1</label><br />
-      <label><input type="checkbox" value="2" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>2</label><br />
-    </div>
-
-    <svg ref={svgRef} width="100%" height="50vh">
-      <g className="x-axis" />
-      <g className="y-axis" />
-    </svg>
+      <div className = "legend" id="clusters">
+        <label><input type="checkbox" value="-1" className="w-4 h-4 text-[ ${myColor(-1) }] bg-[ ${myColor(-1) }] border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>unclustered</label><br />
+        <label><input type="checkbox" value="0" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>0</label><br />
+        <label><input type="checkbox" value="1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>1</label><br />
+        <label><input type="checkbox" value="2" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>2</label><br />
+      </div>
+      <div className="pointplot">
+        <svg ref={svgRef} width="100%" height="50vh">
+          <g className="x-axis" />
+          <g className="y-axis" />
+        </svg>
+      </div>
     </div>
 
   </React.Fragment>
