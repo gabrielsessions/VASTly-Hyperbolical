@@ -53,7 +53,7 @@ const data = [
 
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState("hi");
+  const [selectedRowData, setSelectedRowData] = useState("test");
 
   const getChosenRowData = selectedRow => {
     setSelectedRowData({selectedRow });
@@ -82,11 +82,10 @@ export default function DataTable(props) {
 
   return (
     <div>
-        <h1 className="text-center text-2xl my-6">Data Table Goes Here!</h1> 
 
         <p className="text-center text-1xl my-2"> {selectedRowData}</p>
 
-         <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData}></SimpleTable>
+        <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData}></SimpleTable>
             
     </div>
   )

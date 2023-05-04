@@ -10,7 +10,6 @@ export default function SimpleTable(props) {
     <div className="lg:mb-24 mb-8">
       {/* Title and query that was last run */}
       <h1 className="text-center text-2xl block">Database Query Results</h1>
-      <h3 className="text-center my-4 mx-8">{props.displayedQuery}</h3>  
       <div className="bg-gray-100 flex mx-8 rounded p-4 shadow">
 
 
