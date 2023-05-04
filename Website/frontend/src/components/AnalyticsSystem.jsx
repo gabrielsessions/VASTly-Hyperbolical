@@ -47,7 +47,7 @@ export default function AnalyticsSystem() {
     });
 
     const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
-    const initTSNEQuery = "SELECT * FROM car_data;";
+    //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
@@ -76,7 +76,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={tsneQuery} executeQuery={executeQuery}/>
+            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={TSNEQuery} executeQuery={executeQuery}/>
           </div>
         </div>
         <div>

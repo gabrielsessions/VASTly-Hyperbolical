@@ -55,7 +55,7 @@ const data = [
 
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState();
+  const [selectedRowData, setSelectedRowData] = useState("");
 
   const getChosenRowData = selectedRow => {
     setSelectedRowData(selectedRow);
