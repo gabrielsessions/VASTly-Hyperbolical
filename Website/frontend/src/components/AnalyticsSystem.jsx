@@ -47,6 +47,30 @@ export default function AnalyticsSystem() {
 
   }
 
+  useEffect(() => {
+    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
+    executeQuery(initGraphQuery, (res) => {
+      setGraphQuery({
+        sqlQuery: initGraphQuery,
+        data: res.rows,
+        fields: res.fields
+      });
+    });
+
+    const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
+    executeQuery(initTSNEQuery, (res) => {
+      setTSNEQuery({
+        sqlQuery: initTSNEQuery,
+        data: res.rows,
+        fields: res.fields
+      });
+    });
+    
+
+
+  }, [])
+
+
   // Fetch default data from server (first 10 entries)
 
   return (
@@ -65,7 +89,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable />
+            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={tsneQuery} executeQuery={executeQuery}/>
           </div>
         </div>
         <div>
