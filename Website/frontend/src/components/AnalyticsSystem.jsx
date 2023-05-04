@@ -45,7 +45,7 @@ export default function AnalyticsSystem() {
       });
     });
 
-    const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 10;";
+    const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
         sqlQuery: initTSNEQuery,

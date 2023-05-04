@@ -1,5 +1,6 @@
 import SimpleTable from "../SimpleTable.jsx";
 import { useState, useEffect } from "react";
+
 /**
  * general plan:
  * input is from query #1: timeline + tsne interact to give specific cluster, vehicle type, time
@@ -12,7 +13,7 @@ import { useState, useEffect } from "react";
 */
 
 const fields = [ 
-  'timestamp', 'carid', 'gatename' 
+  'carid', 'cartype', 'cluster', 'first_entry', 'last_entry'
  ];
 
 /** dummy data - key matches field, values are json objects 
@@ -32,7 +33,7 @@ const data = [
  * carid, cartype, cluster <- car_data <- t-sne data
  * firstentry, lastext <- min/max queries of sensor data table 
  * 
- * SELECT car.carid, car.cartype, car.cluster, sensor.first, sensor.last
+ * SELECT car.carid, car.cartype, car.cluster, sensor.first AS MIN(sensor.Tiems), sensor.last
  * FROM cardata as car, sensor_data as sensor
  * WHERE car.cluster = ___ <- from selection of boxes
  * WHERE car.cartype = ___ <- from selection of line 
@@ -51,42 +52,65 @@ const data = [
  * SimpleTable (child) uses the onclick function to choose data from selected row
  */
 
+
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState("test");
+  const [selectedRowData, setSelectedRowData] = useState();
 
   const getChosenRowData = selectedRow => {
-    setSelectedRowData({selectedRow });
+    setSelectedRowData(selectedRow);
   };
       
-  var queryTemplate = "SELECT sensor.gatename, sensor.Timestamp, sensor.carid " + 
-    "FROM sensor_data AS sensor" + 
-    "WHERE sensor.carid = setSelectedRowData" + 
-    "ORDER BY sensor.carid, sensor.TimeStamp DESC"
+  var queryTemplate = "SELECT sensor.gatename, sensor.Timestamp, sensor.carid FROM sensor_data AS sensor WHERE sensor.carid = setSelectedRowData ORDER BY sensor.carid, sensor.TimeStamp ASC"
 
-  var dummyData = "SELECT * FROM sensor_data AS sensor LIMIT 10"
+  var queryOne = "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
+
+  var dummyData = "SELECT * FROM sensor_data AS sensor LIMIT 50"
+
+  var queryTwo = `SELECT * FROM sensor_data AS sensor WHERE sensor.carid = '${getChosenRowData}'`
 
   function getResult(res) {
     props.setTSNEQuery({
-      sqlQuery: dummyData,
+      sqlQuery: queryOne,
       data: res.rows,
       fields: res.fields
       
     });
   }
 
-  /** define new function, use it as callback to execute theory */
+  function getGraphResult(res) {
+    props.setGraphQuery({
+      sqlQuery: queryTwo,
+      data: res.rows,
+      fields: res.fields
+      
+    });
+    console.log(res)
+  }
+
+  /** define new function, use it as callback to execute query */
   useEffect(() => {
-    props.executeQuery(dummyData, getResult);
+    props.executeQuery(queryOne, getResult);
   }, [])
 
+    /** update function to state of graphQuery function */
+
+
+  /** send selected data from selected car id to graph query */
+
+
+
   return (
-    <div>
+    <div  >
 
         <p className="text-center text-1xl my-2"> {selectedRowData}</p>
-
-        <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData}></SimpleTable>
-            
+    
+        <div class = "h-96 overflow-y-auto"> 
+        
+        <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData} />
+        
+        </div> 
+        
     </div>
   )
 }

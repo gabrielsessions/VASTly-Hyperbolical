@@ -9,7 +9,7 @@ export default function SimpleTable(props) {
   return (
     <div className="lg:mb-24 mb-8">
       {/* Title and query that was last run */}
-      <h1 className="text-center text-2xl block">Database Query Results</h1>
+      <h1 className="text-center text-2xl block">Query Results</h1>
       <div className="bg-gray-100 flex mx-8 rounded p-4 shadow">
 
 
@@ -26,6 +26,7 @@ export default function SimpleTable(props) {
                   )
                 })
               }
+              
             </tr>
 
           </thead>
@@ -35,7 +36,8 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr onClick={() => props.getChosenRowData(elem["carid"])} key={index} className="hover:bg-gray-200">
+                  <tr onClick={() => props.executeQuery(props.queryTwo, getGraphResult)}>
+                  
                     {
                       props.fields.map((rowElem, colIndex) => {
                         // Make timestamps readable
