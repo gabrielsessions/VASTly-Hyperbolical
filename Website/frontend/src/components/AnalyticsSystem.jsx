@@ -25,33 +25,27 @@ export default function AnalyticsSystem() {
     fields: []
   });
 
-  function executeQuery(query, callback) {
-    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
-      sqlQuery: query
+
 
   useEffect(() => {
     const initTSNEQuery = "SELECT * FROM car_data;";
-    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
-      sqlQuery: initTSNEQuery
-
-    }))
-      .then((res) => {
-        console.log(res);
-        return res.json()
-
-       
+    executeQuery(initTSNEQuery, (res) => {
+      setTSNEQuery({
+        sqlQuery: initTSNEQuery,
+        data: res.rows,
+        fields: res.fields
       })
-      .then((res) => {
-        console.log(res)
-        setTSNEQuery({
-          sqlQuery: initTSNEQuery,
-          
-          data: res.rows,
-          fields: res.fields
-        })
-      });
+    })
   }, [])
 
+  function executeQuery(query, callback) {
+    fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
+      sqlQuery: query
+    }))
+      .then((res) => res.json())
+      .then((res) => callback(res))
+
+  }
 
   // Fetch default data from server (first 10 entries)
 
@@ -66,17 +60,17 @@ export default function AnalyticsSystem() {
         <div>
           <div className={analyticsComponentClass}>
 
-            <ClassificationPlot TSNEQuery={TSNEQuery}/>
+            <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable/>
+            <DataTable />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <Timeline/>
+            <Timeline />
           </div>
         </div>
       </div>
