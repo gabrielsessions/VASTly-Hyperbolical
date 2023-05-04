@@ -59,7 +59,16 @@ export default function AnalyticsSystem() {
             <ClassificationPlot TSNEQuery={TSNEQuery}/>
           </div>
         </div>
-
+        <div>
+          <div className={analyticsComponentClass}>
+            <DataTable/>
+          </div>
+        </div>
+        <div>
+          <div className={analyticsComponentClass}>
+            <Timeline/>
+          </div>
+        </div>
       </div>
 
     </div>
