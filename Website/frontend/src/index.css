@@ -15,7 +15,7 @@ svg {
   background: #fff;
   overflow: visible;
   display: block;
-  width: 40vw;
+  width: 35vw;
   height: 50vh;
 }
 
@@ -24,6 +24,11 @@ svg {
 }
 
 .legend {
+  display: flex;
   order: 1;
+}
+
+.col2 {
+  order: 1
 }
 
