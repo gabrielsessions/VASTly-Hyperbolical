@@ -24,11 +24,9 @@ export default function AnalyticsSystem() {
     fields: []
   });
 
-
-  useEffect(() => {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
+  function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
-      sqlQuery: initGraphQuery
+      sqlQuery: query
     }))
       .then((res) => {
         console.log(res);
@@ -43,6 +41,7 @@ export default function AnalyticsSystem() {
           fields: res.fields
         })
       });
+    });
   }, [])
 
 
