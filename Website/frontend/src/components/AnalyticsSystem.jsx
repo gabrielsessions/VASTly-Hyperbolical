@@ -12,7 +12,8 @@ export default function AnalyticsSystem() {
   // global data variable:
   // 2 Queries one for graph/table, one for tsne
 
-  const [tsneQuery, setTSNEQuery] = useState({
+
+  const [TSNEQuery, setTSNEQuery] = useState({
     sqlQuery: "",
     data: [],
     fields: []
@@ -46,6 +47,7 @@ export default function AnalyticsSystem() {
     });
 
     const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
+    const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
@@ -53,13 +55,8 @@ export default function AnalyticsSystem() {
         fields: res.fields
       });
     });
-    
 
-
-  }, [])
-
-
-
+}, [])
 
   // Fetch default data from server (first 10 entries)
 
@@ -73,13 +70,10 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <ClassificationPlot />
+
+            <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
-
-      </div>
-
-      <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
             <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={tsneQuery} executeQuery={executeQuery}/>
@@ -90,8 +84,8 @@ export default function AnalyticsSystem() {
             <Timeline />
           </div>
         </div>
-
       </div>
+
     </div>
   )
 }
