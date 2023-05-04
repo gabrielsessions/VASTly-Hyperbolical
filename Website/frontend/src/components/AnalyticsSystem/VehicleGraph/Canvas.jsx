@@ -1,27 +1,56 @@
-import React from 'react';
-import ReactFlow from 'reactflow';
+import React, { useEffect, useState } from 'react';
+import ReactFlow, {Controls} from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import gate_info from './gate_info';
 import default_paths from './default_paths';
+import edge_calculation from './edge_calculation';
 
-/*
-let initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-  { id: '3', position: { x: 0, y: 150 }, data: { label: 'Stuff' } },
-];
-*/
+import TooltipNode from './TooltipNode';
 
 const initialNodes = gate_info;
 const initialEdges = default_paths;
-//const initialEdges = [{ id: 'e1-2', source: 'gate1', target: 'gate2', animated: true, style:{strokeWidth:3}}];
+const nodeTypes = {
+  tooltip: TooltipNode,
+};
 
-export default function DemoFlow() {
-  const defaultViewport = { x: 200, y: 80, zoom: 0.5 };
+export default function Canvas(props) {
+  const [nodes, setNodes] = useState(initialNodes);
+  const [defaultEdges, setDefaultEdges] = useState(initialEdges);
+  const [edges, setEdges] = useState(initialEdges);
+
+  useEffect(() => {
+    if (props.graphQuery.sqlQuery !== "") {
+      const newEdges = edge_calculation(props.graphQuery.data);
+      setDefaultEdges(newEdges);
+      setEdges(newEdges);
+    }
+    else {
+      setDefaultEdges(initialEdges);
+      setEdges(initialEdges);
+    }
+  }, [props.graphQuery])
+
   return (
     <div style={{ width: '100vh', height: '65vh' }}>
-      <ReactFlow defaultViewport={defaultViewport} nodes={initialNodes} edges={initialEdges} proOptions={{ hideAttribution: true }} />
+      <ReactFlow fitView={true} nodes={nodes} edges={edges} proOptions={{ hideAttribution: true }} nodeTypes={nodeTypes} onNodeClick={(e, node) => {
+        setEdges((prev) => {
+          return prev.filter((elem) => {
+            return elem.source === node.id || elem.target === node.id
+          })
+        })
+      }}
+      onNodeDoubleClick={() => setEdges(defaultEdges)}>
+        <Controls />
+        <div className='p-1'>
+          <p className='text-pink-500'>Entrance</p>
+          <p className='text-green-500'>Gate</p>
+          <p className='text-red-500'>General Gate</p>
+          <p className='text-blue-500'>Camping</p>
+          <p className='text-purple-500'>Ranger Stop</p>
+          <p className='text-yellow-300'>Ranger Base</p>
+        </div>
+      </ReactFlow>
     </div>
   );
 }

@@ -54,13 +54,13 @@ export default function AnalyticsSystem() {
       <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
-            <VehicleMap graphQuery={graphQuery} />
+            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
 
-            <ClassificationPlot TSNEQuery={TSNEQuery} />
+            {/*<ClassificationPlot TSNEQuery={TSNEQuery} />*/}
           </div>
         </div>
         <div>
