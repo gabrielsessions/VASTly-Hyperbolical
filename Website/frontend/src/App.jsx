@@ -1,4 +1,4 @@
-import Query from "./components/Query"
+import Query from "./components/OldComponents/Query"
 import AnalyticsSystem from "./components/AnalyticsSystem";
 
 /**

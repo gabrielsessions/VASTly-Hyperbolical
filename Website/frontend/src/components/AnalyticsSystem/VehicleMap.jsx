@@ -1,10 +1,16 @@
 // Import Stuff Here!
+import Canvas from "./VehicleGraph/Canvas"
+
+
+// Use THIS! 
+//https://codesandbox.io/s/react-d3-graph-demo-e8d2pp?file=/src/data.js
 
 
 export default function VehicleMap() {
   return (
     <div>
-        <h1 className="text-center text-2xl my-6">Vehicle Map Goes Here!</h1>
+      <Canvas />
     </div>
   )
+
 }
