@@ -1,6 +1,6 @@
 // Import Stuff Here!
 import React, { useRef, useEffect, useState } from "react";
-import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow} from "d3";
+import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow, symbolCircle, symbolCross, symbolSquare, symbolTriangle, symbolStar, symbolDiamond, symbolWye, symbol} from "d3";
 
 //dimension hook
 const useResizeObserver = ref => {
@@ -24,21 +24,30 @@ export default function ClassificationPlot(props) {
   const svgRef = useRef();
   const dimensions = useResizeObserver(svgRef)
 
+  function calcMinMax(data){
+    var xMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.xcoord))))
+    var xMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.xcoord))))
+    var yMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.ycoord))))
+    var yMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.ycoord))))
+
+    return [xMin,xMax,yMin,yMax]
+}
 
   useEffect(() => {
     const svg = select(svgRef.current);
     const data = props.TSNEQuery.data;
     //const clusters = props.TSNEQuery.data;
+    var axesLimits=calcMinMax(data)
 
     if (!dimensions) return;
 
     //define scales
     const xScale = scaleLinear()
-      .domain([-230000, 230000])
+      .domain([axesLimits[0]*1.05, axesLimits[1]*1.05])
       .range([0, dimensions.width]);
 
     const yScale = scaleLinear()
-      .domain([-230000, 230000])
+      .domain([axesLimits[2]*1.05, axesLimits[3]*1.05])
       .range([dimensions.height, 0]);
 
 
@@ -46,6 +55,31 @@ export default function ClassificationPlot(props) {
     .domain([-1,18])
     .interpolator(interpolateRainbow);
     console.log(data)
+
+    function determineDotShape(value){
+            
+      if (value.cartype=="1"){
+          return symbol().size(50).type(symbolCircle)()
+      }
+      else if (value.cartype=="2"){
+        return symbol().size(50).type(symbolCross)()
+      }
+      else if (value.cartype=="2P"){
+        return symbol().size(50).type(symbolDiamond)()
+      }
+      else if (value.cartype=="3"){
+        return symbol().size(50).type(symbolSquare)()
+      }
+      else if (value.cartype=="4"){
+        return symbol().size(50).type(symbolStar)()
+      }
+      else if (value.cartype=="5"){
+        return symbol().size(50).type(symbolTriangle)()
+      }
+      else if (value.cartype=="6"){
+        return symbol().size(50).type(symbolWye)()
+      }
+    }
 
     //draw axes
     const xAxis = axisBottom(xScale)
@@ -62,33 +96,40 @@ export default function ClassificationPlot(props) {
 
     //draw points
     svg
-      .selectAll("circle")
+      .selectAll(".dot")
       .data(data)
       .join(
         enter =>{console.log("enter");
-        return enter.append("circle")
+        return enter.append("path")
+          .attr("class", "dot")
+          .attr("opacity", 0.2)
+          .attr("stroke","black")
+          .attr("stroke-opacity", 0.2)
           .attr("r", 1)
-          .attr("cx", value => xScale(value.x))
-          .attr("cy", value => yScale(value.y))
-          .style('opacity', 0.75)
-          .style('fill', 'black')},
+          .attr('d', value => determineDotShape(value))
+          .attr("cx", value => xScale(value.xcoord))
+          .attr("cy", value => yScale(value.ycoord))
+          .attr('transform', value => 'translate(' + xScale(value.xcoord) + ', ' + yScale(value.ycoord) + ')')
+          .attr('fill', value => { return myColor(value.cluster)})},
         update => update.attr("class", "updated")
-        .attr("r", 1)
-        .attr("cx", value => xScale(value.xcoord))
-        .attr("cy", value => yScale(value.ycoord))
-        .style('opacity', 0.75)
-        .style('fill', value => { return myColor(value.cluster)}),
+          .transition()
+          .attr("opacity", 0.2)
+          .attr("stroke","black")
+          .attr("stroke-opacity", 0.2)
+          .attr("r", 1)
+          .attr('d', value => determineDotShape(value))
+          .attr("cx", value => xScale(value.xcoord))
+          .attr("cy", value => yScale(value.ycoord))
+          .attr('transform', value => 'translate(' + xScale(value.xcoord) + ', ' + yScale(value.ycoord) + ')')
+          .attr('fill', value => { return myColor(value.cluster)}),
         exit => exit
-        .transition()
-        .delay(1000)
-        .attr('r', 0)
-        .remove()
+          .remove()
   )
 }, [props.TSNEQuery, dimensions])
 
 return (
   <React.Fragment>
-    <div class="flex space-x-4"> 
+    <div class='display:flex;'> 
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
           &#10226;
         </button>
@@ -96,11 +137,20 @@ return (
           Run
         </button>
     </div>
-    <br />
+
+    <div className="scatterplot">
+    <div className = "legend" id="clusters">
+      <label><input type="checkbox" value="-1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>unclustered</label><br />
+      <label><input type="checkbox" value="0" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>0</label><br />
+      <label><input type="checkbox" value="1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>1</label><br />
+      <label><input type="checkbox" value="2" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 focus:ring-offset-0"/>2</label><br />
+    </div>
+
     <svg ref={svgRef} width="100%" height="50vh">
       <g className="x-axis" />
       <g className="y-axis" />
     </svg>
+    </div>
 
   </React.Fragment>
 )
