@@ -18,9 +18,10 @@ const initialEdges = default_paths;
 //const initialEdges = [{ id: 'e1-2', source: 'gate1', target: 'gate2', animated: true, style:{strokeWidth:3}}];
 
 export default function DemoFlow() {
+  const defaultViewport = { x: 200, y: 80, zoom: 0.5 };
   return (
     <div style={{ width: '100vh', height: '65vh' }}>
-      <ReactFlow nodes={initialNodes} edges={initialEdges} proOptions={{ hideAttribution: true }} />
+      <ReactFlow defaultViewport={defaultViewport} nodes={initialNodes} edges={initialEdges} proOptions={{ hideAttribution: true }} />
     </div>
   );
 }
