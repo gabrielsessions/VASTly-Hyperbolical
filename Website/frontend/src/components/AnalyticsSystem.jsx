@@ -28,20 +28,18 @@ export default function AnalyticsSystem() {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
     }))
-      .then((res) => res.json())
       .then((res) => {
-        callback(res);
+        console.log(res);
+        return res.json()
+        
       })
-  }
-
-
-  useEffect(() => {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
-    executeQuery(initGraphQuery, (res) => {
-      setGraphQuery({
-        sqlQuery: query,
-        data: res.rows,
-        fields: res.fields
+      .then((res) => {
+        console.log(res)
+        setGraphQuery({
+          sqlQuery: initGraphQuery,
+          data: res.rows,
+          fields: res.fields
+        })
       });
     });
   }, [])
