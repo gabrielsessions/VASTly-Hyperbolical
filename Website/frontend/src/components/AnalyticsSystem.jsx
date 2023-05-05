@@ -24,6 +24,11 @@ export default function AnalyticsSystem() {
     data: [],
     fields: []
   });
+
+  useEffect(() => {
+    console.log("TSNE CHANGED");
+    console.log(TSNEQuery);
+  }, [TSNEQuery])
   
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
@@ -46,13 +51,14 @@ export default function AnalyticsSystem() {
       });
     });
 
-    const initTSNEQuery = "SELECT * FROM sensor_data LIMIT 50;";
+    const initTSNEQuery = "SELECT * FROM car_data NATURAL JOIN sensor_data LIMIT 100;";
     //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
         data: res.rows,
-        fields: res.fields
+        fields: newFields
       });
     });
 
@@ -75,7 +81,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable setTSNEQuery={setTSNEQuery} tsneQuery={TSNEQuery} executeQuery={executeQuery}/>
+            <DataTable setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery}/>
           </div>
         </div>
         <div>
