@@ -1,16 +1,15 @@
-
 /**
  * Simple Table Component
  * Renders an array of objects in a table
  * @param props.data - an array of rows to be rendered in the table
  * @param props.fields - names of the columns in the table
  */
+
 export default function SimpleTable(props) {
   return (
     <div className="lg:mb-24 mb-8">
       {/* Title and query that was last run */}
-      <h1 className="text-center text-2xl block">Database Query Results</h1>
-      <h3 className="text-center my-4 mx-8">{props.displayedQuery}</h3>
+      <h1 className="text-center text-2xl block">Query Results</h1>
       <div className="bg-gray-100 flex mx-8 rounded p-4 shadow">
 
 
@@ -27,6 +26,7 @@ export default function SimpleTable(props) {
                   )
                 })
               }
+              
             </tr>
 
           </thead>
@@ -36,7 +36,8 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr key={index} className="hover:bg-gray-200">
+                  <tr onClick={() => props.executeQuery(props.queryTwo, getGraphResult)}>
+                  
                     {
                       props.fields.map((rowElem, colIndex) => {
                         // Make timestamps readable
