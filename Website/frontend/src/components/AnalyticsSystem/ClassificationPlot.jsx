@@ -67,16 +67,18 @@ function colorRecode(color){
     const data = props.TSNEQuery.data;
     //const clusters = props.TSNEQuery.data;
     var axesLimits=calcMinMax(data)
+    const xbuffer=(axesLimits[1]-axesLimits[0])*.05
+    const ybuffer=(axesLimits[3]-axesLimits[2])*.05
 
     if (!dimensions) return;
 
     //define scales
     const xScale = scaleLinear()
-      .domain([axesLimits[0]*1.05, axesLimits[1]*1.05])
+      .domain([axesLimits[0]-xbuffer, axesLimits[1]+xbuffer])
       .range([0, dimensions.width]);
 
     const yScale = scaleLinear()
-      .domain([axesLimits[2]*1.05, axesLimits[3]*1.05])
+      .domain([axesLimits[2]-ybuffer, axesLimits[3]+ybuffer])
       .range([dimensions.height, 0]);
 
     var determineDotSize = scaleLinear()
@@ -204,7 +206,7 @@ return (
           <h1>&#x25CF; 2 axle car</h1>
           <h1>&#10010; 2 axle truck</h1>
           <h1>&#x25A0; 3 axle truck</h1>
-          <h1>&#x2605; 4+ axle car</h1>
+          <h1>&#x2605; 4+ axle truck</h1>
           <h1>&#x25B2; 2 axle bus</h1>
           <h1>&#x311A; 3 axle bus</h1>
           <h1>&#x25C6; park vehicle</h1>
@@ -212,8 +214,8 @@ return (
       </div>
       <div className="pointplot scatter">
         <svg ref={svgRef} width="35vw" height="50vh" className="scatter">
-          {/* <g className="x-axis" />
-          <g className="y-axis" /> */}
+{/*           <g className="x-axis" />
+          <g className="y-axis" />  */}
         </svg>
       </div>
     </div>

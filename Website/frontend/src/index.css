@@ -17,15 +17,9 @@ svg.scatter {
   display: block;
   width: 40vw;
   height: 70vh;
-  padding-right: 60px;
-  padding-left: 15px;
+  padding-right: 5px;
+  padding-left: 5px;
 }
-
-.brush .overlay {
-  fill: none;
-  pointer-events: all;
-}
-
 
 .scatterplot {
   display: flex;
