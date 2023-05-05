@@ -19,17 +19,24 @@ export default function AnalyticsSystem() {
     fields: []
   });
 
+  const [timelineQuery, setTimelineQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+  const [tableQuery, setTableQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
   const [graphQuery, setGraphQuery] = useState({
     sqlQuery: "",
     data: [],
     fields: []
   });
 
-  useEffect(() => {
-    console.log("TSNE CHANGED");
-    console.log(TSNEQuery);
-  }, [TSNEQuery])
-  
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
@@ -40,17 +47,7 @@ export default function AnalyticsSystem() {
       })
   }
 
-
-  useEffect(() => {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
-    executeQuery(initGraphQuery, (res) => {
-      setGraphQuery({
-        sqlQuery: initGraphQuery,
-        data: res.rows,
-        fields: res.fields
-      });
-    });
-
+  function initialTSNEQuery() {
     const initTSNEQuery = "SELECT * FROM car_data NATURAL JOIN sensor_data LIMIT 100;";
     //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
@@ -61,8 +58,28 @@ export default function AnalyticsSystem() {
         fields: newFields
       });
     });
+  }
 
-}, [])
+  function initialTimelineQuery() {
+
+  }
+
+  function initialTableQuery() {
+
+  }
+
+  function initialGraphQuery() {
+
+  }
+
+
+  useEffect(() => {
+    initialTSNEQuery();
+    initialTableQuery();
+    initialTimelineQuery();
+    initialGraphQuery();
+
+  }, [])
 
   // Fetch default data from server (first 10 entries)
 
@@ -76,17 +93,18 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
+
             <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery}/>
+            <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <Timeline />
+            <Timeline timelineQuery={timelineQuery} />
           </div>
         </div>
       </div>

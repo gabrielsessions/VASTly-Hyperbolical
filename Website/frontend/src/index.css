@@ -21,6 +21,12 @@ svg.scatter {
   padding-left: 15px;
 }
 
+.brush .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+
 .scatterplot {
   display: flex;
 }

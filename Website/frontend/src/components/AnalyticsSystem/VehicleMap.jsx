@@ -29,7 +29,7 @@ export default function VehicleMap(props) {
 
   return (
     <div>
-      <Canvas graphQuery={testData} executeQuery={props.executeQuery} />
+      <Canvas graphQuery={props.graphQuery} executeQuery={props.executeQuery} />
     </div>
   )
 
