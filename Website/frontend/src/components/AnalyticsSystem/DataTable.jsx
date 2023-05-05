@@ -55,7 +55,7 @@ const data = [
 
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState();
+  const [selectedRowData, setSelectedRowData] = useState("");
 
   const getChosenRowData = selectedRow => {
     setSelectedRowData(selectedRow);
@@ -90,14 +90,16 @@ export default function DataTable(props) {
 
   /** define new function, use it as callback to execute query */
   useEffect(() => {
-    props.executeQuery(queryOne, getResult);
-  }, [])
+    console.log(props.TSNEQuery.data)
+    //props.executeQuery(queryOne, getResult);
+  }, [props.TSNEQuery])
 
     /** update function to state of graphQuery function */
 
 
   /** send selected data from selected car id to graph query */
 
+  console.log(props.TSNEQuery.fields);
 
 
   return (

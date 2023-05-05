@@ -19,12 +19,24 @@ export default function AnalyticsSystem() {
     fields: []
   });
 
+  const [timelineQuery, setTimelineQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
+  const [tableQuery, setTableQuery] = useState({
+    sqlQuery: "",
+    data: [],
+    fields: []
+  });
+
   const [graphQuery, setGraphQuery] = useState({
     sqlQuery: "",
     data: [],
     fields: []
   });
-  
+
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
@@ -34,6 +46,7 @@ export default function AnalyticsSystem() {
         callback(res);
       })
   }
+
 
 
   useEffect(() => {
@@ -51,16 +64,38 @@ export default function AnalyticsSystem() {
     // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data AS car NATURAL JOIN sensor_data AS sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 10;"
     // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
 
+
     //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
         data: res.rows,
-        fields: res.fields
+        fields: newFields
       });
     });
+  }
 
-}, [])
+  function initialTimelineQuery() {
+
+  }
+
+  function initialTableQuery() {
+
+  }
+
+  function initialGraphQuery() {
+
+  }
+
+
+  useEffect(() => {
+    initialTSNEQuery();
+    initialTableQuery();
+    initialTimelineQuery();
+    initialGraphQuery();
+
+  }, [])
 
   // Fetch default data from server (first 10 entries)
 
@@ -69,23 +104,25 @@ export default function AnalyticsSystem() {
       <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
-            <VehicleMap graphQuery={graphQuery} />
+            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} />
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div className={analyticsComponentClass} style={{height: '70vh'}}>
 
             <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <DataTable setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery}/>
+
+            <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />
+
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <Timeline />
+            <Timeline timelineQuery={timelineQuery} />
           </div>
         </div>
       </div>

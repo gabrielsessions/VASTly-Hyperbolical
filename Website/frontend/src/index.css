@@ -11,10 +11,45 @@
   padding: 10px 10px 10px 10px;
 }
 
-svg {
+svg.scatter {
   background: #fff;
   overflow: visible;
   display: block;
-  width: 90%;
-  height: 50vh;
+  width: 40vw;
+  height: 70vh;
+  padding-right: 60px;
+  padding-left: 15px;
 }
+
+.brush .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+
+.scatterplot {
+  display: flex;
+}
+
+.legend {
+  order: 1;
+}
+
+.checks {
+  display: flex;
+}
+
+.col2 {
+  order: 1;
+  padding-left: 3px;
+}
+
+.y-axis{
+  padding-right: 20px;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
