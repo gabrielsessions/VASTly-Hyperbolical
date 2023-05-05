@@ -15,7 +15,7 @@ svg {
   background: #fff;
   overflow: visible;
   display: block;
-  width: 35vw;
+  width: 40vw;
   height: 50vh;
   padding-right: 60px;
 }
@@ -25,15 +25,24 @@ svg {
 }
 
 .legend {
-  display: flex;
   order: 1;
 }
 
+.checks {
+  display: flex;
+}
+
 .col2 {
-  order: 1
+  order: 1;
+  padding-left: 3px;
 }
 
 .y-axis{
   padding-right: 20px;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
 }
 
