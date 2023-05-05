@@ -11,6 +11,7 @@ export default function SimpleTable(props) {
       {/* Title and query that was last run */}
       <h1 className="text-center text-2xl block">Query Results</h1>
       <div className="bg-gray-100 flex mx-8 rounded p-4 shadow">
+      
 
 
         {/* Only display table when there's results to display */}
@@ -18,7 +19,7 @@ export default function SimpleTable(props) {
 
           {/* Table Header, displays column names */}
           <thead className="border">
-            <tr>
+            <tr class="bg-gray-300">
               {
                 props.fields.map((elem, index) => {
                   return (
@@ -36,7 +37,7 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr onClick={() => props.executeQuery(props.queryTwo, props.getGraphResult)}>
+                  <tr onClick={() => props.executeQuery(props.queryTwo, props.getGraphResult)} class="hover:bg-gray-200">
                   
                     {
                       props.fields.map((rowElem, colIndex) => {
