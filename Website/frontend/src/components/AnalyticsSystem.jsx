@@ -28,7 +28,7 @@ export default function AnalyticsSystem() {
 
 
   useEffect(() => {
-    const initTSNEQuery = "SELECT * FROM car_data;";
+    const initTSNEQuery = "SELECT * FROM car_data LIMIT 20;";
     executeQuery(initTSNEQuery, (res) => {
       setTSNEQuery({
         sqlQuery: initTSNEQuery,
@@ -59,7 +59,6 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-
             <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>

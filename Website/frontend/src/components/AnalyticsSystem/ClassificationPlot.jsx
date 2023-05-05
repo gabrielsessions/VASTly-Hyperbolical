@@ -112,6 +112,8 @@ function colorRecode(color){
       }
     }
 
+    const cartypes = ["1","2","2P","3","4","5","6"]
+
     //draw axes
     const xAxis = axisBottom(xScale)
     svg
@@ -200,6 +202,11 @@ return (
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
             Run
           </button>
+        </div>
+        <div className="symbology">
+          <h1>&#9899; 2 axel car</h1>
+          <h1>2 axel truck</h1>
+  
         </div>
 
       </div>
