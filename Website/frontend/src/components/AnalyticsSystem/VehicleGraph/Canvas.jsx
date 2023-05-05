@@ -87,7 +87,7 @@ export default function Canvas(props) {
           {
             displayText !== "" ?
               <div className='absolute top-2 right-0 xl:right-6 p-1 border-2 border-gray-500 max-w-fit rounded'>
-                <div className='2xl:hidden flex justify-center'>
+                <div className='flex justify-center'>
                   {displayText}
                 </div>
                 
