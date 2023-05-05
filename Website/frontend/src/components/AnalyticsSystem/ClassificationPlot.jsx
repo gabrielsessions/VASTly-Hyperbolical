@@ -161,14 +161,12 @@ function colorRecode(color){
 
 return (
   <React.Fragment>
-
-
     <div className="scatterplot">
       <div className = "legend" id="clusters">
 
         <div className="checks">
           <div className = "col1">
-            <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>unclustered</label><br />
+            <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>-1</label><br />
             <label ><input type="checkbox" value="0" style={{"color":colorRecode(myColor(0)), "background-color": colorRecode(myColor(0))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>0</label><br />
             <label ><input type="checkbox" value="1" style={{"color":colorRecode(myColor(1)), "background-color": colorRecode(myColor(1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>1</label><br />
             <label ><input type="checkbox" value="2" style={{"color":colorRecode(myColor(2)), "background-color": colorRecode(myColor(2))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>2</label><br />
@@ -203,15 +201,20 @@ return (
           </button>
         </div>
         <div className="symbology">
-          <h1>&#9899; 2 axel car</h1>
-          <h1>2 axel truck</h1>
-  
+          <h1>&#9899; 2 axle car</h1>
+          <h1>&#10010; 2 axle truck</h1>
+          <h1>&#9899; 3 axle truck</h1>
+          <h1>&#9899; 4+ axle car</h1>
+          <h1>&#9899; 2 axle bus</h1>
+          <h1>&#9650; 3 axle bus</h1>
+          <h1>&#9899; park vehicle</h1>
+          
         </div>
 
       </div>
 
-      <div className="pointplot">
-        <svg ref={svgRef} width="35vw" height="50vh">
+      <div className="pointplot scatter">
+        <svg ref={svgRef} width="35vw" height="50vh" className="scatter">
           <g className="x-axis" />
           <g className="y-axis" />
         </svg>
