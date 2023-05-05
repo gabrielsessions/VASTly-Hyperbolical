@@ -36,7 +36,7 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr onClick={() => props.executeQuery(props.queryTwo, getGraphResult)}>
+                  <tr onClick={() => props.executeQuery(props.queryTwo, props.getGraphResult)}>
                   
                     {
                       props.fields.map((rowElem, colIndex) => {

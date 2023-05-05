@@ -107,8 +107,10 @@ export default function DataTable(props) {
     
         <div class = "h-96 overflow-y-auto"> 
         
-        <SimpleTable data = {props.tsneQuery.data} fields = {fields} getChosenRowData = {getChosenRowData} />
-        
+        <SimpleTable data = {props.TSNEQuery.data} fields = {['carid', 'cartype', 'cluster', 'first_entry', 'last_entry']} getChosenRowData = {getChosenRowData} getGraphResult = {getGraphResult}/>
+        const fields = [ 
+  
+ ];
         </div> 
         
     </div>
