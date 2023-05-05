@@ -42,15 +42,6 @@ export default function AnalyticsSystem() {
 
 
   useEffect(() => {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
-    executeQuery(initGraphQuery, (res) => {
-      setGraphQuery({
-        sqlQuery: initGraphQuery,
-        data: res.rows,
-        fields: res.fields
-      });
-    });
-
     const initTSNEQuery = "SELECT * FROM car_data NATURAL JOIN sensor_data LIMIT 100;";
     //const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
