@@ -70,8 +70,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass}>
-
-            {/*<ClassificationPlot TSNEQuery={TSNEQuery} />*/}
+            <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
         <div>
