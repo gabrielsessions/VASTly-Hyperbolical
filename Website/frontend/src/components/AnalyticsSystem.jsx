@@ -12,30 +12,16 @@ export default function AnalyticsSystem() {
   // global data variable:
   // 2 Queries one for graph/table, one for tsne
 
-
-  const [TSNEQuery, setTSNEQuery] = useState({
+  const initialQuery = {
     sqlQuery: "",
     data: [],
     fields: []
-  });
+  }
 
-  const [timelineQuery, setTimelineQuery] = useState({
-    sqlQuery: "",
-    data: [],
-    fields: []
-  });
-
-  const [tableQuery, setTableQuery] = useState({
-    sqlQuery: "",
-    data: [],
-    fields: []
-  });
-
-  const [graphQuery, setGraphQuery] = useState({
-    sqlQuery: "",
-    data: [],
-    fields: []
-  });
+  const [TSNEQuery, setTSNEQuery] = useState(initialQuery);
+  const [timelineQuery, setTimelineQuery] = useState(initialQuery);
+  const [tableQuery, setTableQuery] = useState(initialQuery);
+  const [graphQuery, setGraphQuery] = useState(initialQuery);
 
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
@@ -48,8 +34,11 @@ export default function AnalyticsSystem() {
   }
 
 
+  function initialTimelineQuery() {
+    
+  }
 
-  useEffect(() => {
+  function initialTableQuery() {
     const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
     executeQuery(initGraphQuery, (res) => {
       setGraphQuery({
@@ -64,8 +53,10 @@ export default function AnalyticsSystem() {
     // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data AS car NATURAL JOIN sensor_data AS sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 10;"
     // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
 
-
-    //const initTSNEQuery = "SELECT * FROM car_data;";
+  }
+  function initialTSNEQuery() {
+    //const initTSNEQuery = ""; // ADD TSNE QUERY HERE!!
+    const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
@@ -74,14 +65,6 @@ export default function AnalyticsSystem() {
         fields: newFields
       });
     });
-  }
-
-  function initialTimelineQuery() {
-
-  }
-
-  function initialTableQuery() {
-
   }
 
   function initialGraphQuery() {
