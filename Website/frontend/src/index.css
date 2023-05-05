@@ -16,8 +16,9 @@ svg {
   overflow: visible;
   display: block;
   width: 40vw;
-  height: 50vh;
+  height: 65vh;
   padding-right: 60px;
+  padding-left: 15px;
 }
 
 .scatterplot {
