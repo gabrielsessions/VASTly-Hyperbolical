@@ -197,7 +197,7 @@ return (
         </div>
       </div>
       <div className="pointplot">
-        <svg ref={svgRef} width="100%" height="50vh">
+        <svg ref={svgRef} width="35vw" height="50vh">
           <g className="x-axis" />
           <g className="y-axis" />
         </svg>
