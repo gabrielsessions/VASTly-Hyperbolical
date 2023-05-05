@@ -91,13 +91,16 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass} style={{ height: '65vh' }}>
+          <div className={analyticsComponentClass} style={{height: '70vh'}}>
+
             <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
+
             <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />
+
           </div>
         </div>
         <div>
