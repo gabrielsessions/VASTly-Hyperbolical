@@ -92,7 +92,8 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass} style={{ height: '65vh' }}>
+          <div className={analyticsComponentClass} style={{height: '70vh'}}>
+
             <ClassificationPlot TSNEQuery={TSNEQuery} />
           </div>
         </div>
