@@ -1,12 +1,5 @@
 
-/*
-general-gate 0-7
-camping 0-8
-gate 0-8
-entrance 0-4
-ranger-stop 0-7
-ranger-base
-*/
+import { Position } from "reactflow";
 
 function genCircularPts(center, radius, numPts) {
   const arr = new Array(numPts);
@@ -52,22 +45,19 @@ gate_setup.forEach(element => {
   for (let i = 0; i < element.count; i++) {
     const index = inner_counter + outer_counter;
     const gate_name = element.type + i;
+    gate_info[index] = {
+      id: gate_name,
+      position: {x: 0, y: 0},
+      data: { label: i, tooltip: gate_name, toolbarPosition: Position.left },
+      style: { width: 30, height: 40, background: gate_colors[element.type][0] }
+    };
+
     if (element.type == "entrance") {
-      gate_info[index] = {
-        id: gate_name,
-        position: innerCircle[inner_counter],
-        data: { label: i },
-        style: { width: 30, height: 40, background: gate_colors[element.type][0] }
-      };
+      gate_info[index].position = innerCircle[inner_counter];
       inner_counter++;
     }
     else {
-      gate_info[index] = {
-        id: gate_name,
-        position: outerCircle[outer_counter],
-        data: { label: i },
-        style: { width: 30, height: 40, background: gate_colors[element.type][0] }
-      };
+      gate_info[index].position = outerCircle[outer_counter];
       outer_counter++;
     }
     
@@ -79,7 +69,5 @@ gate_info[39] = {
   data: { label: "rb" },
   style: { width: 30, height: 40, background: "#FACA15" },
 };
-
-console.log(gate_info);
 
 export default gate_info;
