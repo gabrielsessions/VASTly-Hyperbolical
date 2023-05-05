@@ -70,6 +70,4 @@ gate_info[39] = {
   style: { width: 30, height: 40, background: "#FACA15" },
 };
 
-console.log(gate_info);
-
 export default gate_info;

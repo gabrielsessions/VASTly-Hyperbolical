@@ -28,7 +28,7 @@ export default function VehicleMap(props) {
 
 
   return (
-    <div onClick={() => testing()}>
+    <div>
       <Canvas graphQuery={testData} executeQuery={props.executeQuery} />
     </div>
   )
