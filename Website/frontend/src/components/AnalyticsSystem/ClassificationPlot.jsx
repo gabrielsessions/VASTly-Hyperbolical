@@ -1,6 +1,6 @@
 // Import Stuff Here!
 import React, { useRef, useEffect, useState } from "react";
-import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow, symbolCircle, symbolCross, symbolSquare, symbolTriangle, symbolStar, symbolDiamond, symbolWye, symbol} from "d3";
+import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow, symbolCircle, symbolCross, symbolSquare, symbolTriangle, symbolStar, symbolDiamond, symbolWye, symbolAsterisk, symbol} from "d3";
 
 //dimension hook
 const useResizeObserver = ref => {
@@ -108,7 +108,7 @@ function colorRecode(color){
         return symbol().size(determineDotSize(data.length)).type(symbolTriangle)()
       }
       else if (value.cartype=="6"){
-        return symbol().size(determineDotSize(data.length)).type(symbolWye)()
+        return symbol().size(determineDotSize(data.length)).type(symbolAsterisk)()
       }
     }
 
@@ -201,22 +201,19 @@ return (
           </button>
         </div>
         <div className="symbology">
-          <h1>&#9899; 2 axle car</h1>
+          <h1>&#x25CF; 2 axle car</h1>
           <h1>&#10010; 2 axle truck</h1>
-          <h1>&#9899; 3 axle truck</h1>
-          <h1>&#9899; 4+ axle car</h1>
-          <h1>&#9899; 2 axle bus</h1>
-          <h1>&#9650; 3 axle bus</h1>
-          <h1>&#9899; park vehicle</h1>
-          
+          <h1>&#x25A0; 3 axle truck</h1>
+          <h1>&#x2605; 4+ axle car</h1>
+          <h1>&#x25B2; 2 axle bus</h1>
+          <h1>&#x25B3; 3 axle bus</h1>
+          <h1>&#x25C6; park vehicle</h1>
         </div>
-
       </div>
-
       <div className="pointplot scatter">
         <svg ref={svgRef} width="35vw" height="50vh" className="scatter">
-          <g className="x-axis" />
-          <g className="y-axis" />
+          {/* <g className="x-axis" />
+          <g className="y-axis" /> */}
         </svg>
       </div>
     </div>
