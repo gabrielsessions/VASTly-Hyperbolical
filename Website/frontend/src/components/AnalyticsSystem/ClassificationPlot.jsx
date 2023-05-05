@@ -168,7 +168,7 @@ return (
 
         <div className="checks">
           <div className = "col1">
-            <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>unclustered</label><br />
+            <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>-1</label><br />
             <label ><input type="checkbox" value="0" style={{"color":colorRecode(myColor(0)), "background-color": colorRecode(myColor(0))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>0</label><br />
             <label ><input type="checkbox" value="1" style={{"color":colorRecode(myColor(1)), "background-color": colorRecode(myColor(1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>1</label><br />
             <label ><input type="checkbox" value="2" style={{"color":colorRecode(myColor(2)), "background-color": colorRecode(myColor(2))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/>2</label><br />
