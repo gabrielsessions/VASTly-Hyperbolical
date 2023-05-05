@@ -43,7 +43,6 @@ export default function Canvas(props) {
     <div style={{ width: '100vh', height: '65vh' }} >
       <ReactFlow
         fitView={true}
-        //defaultViewport={{x: 0, y:0, zoom: 0.5}}
         nodes={nodes}
         edges={edges}
         draggable={true}
@@ -58,7 +57,6 @@ export default function Canvas(props) {
             let sumOfCounts = 0;
             newEdges.forEach(elem => {
               sumOfCounts += elem.count;
-              console.log(elem);
             });
 
             setDisplayText(
@@ -85,7 +83,7 @@ export default function Canvas(props) {
 
 
         <div className='p-2 mt-4'>
-          <Legend data={legendTypes} colors={(i) => legendColors[i]}  className={""}/>
+          {<Legend data={legendTypes} colors={(i) => legendColors[i]} />}
           {
             displayText !== "" ?
               <div className='absolute top-2 right-0 xl:right-6 p-1 border-2 border-gray-500 max-w-fit rounded'>
@@ -101,13 +99,14 @@ export default function Canvas(props) {
 
 
         </div>
-
+        {/*
         <ControlButtons
           reset={() => {
             setEdges(defaultEdges);
             setDisplayText("");
           }}
         />
+        */}
       </ReactFlow>
     </div>
   );

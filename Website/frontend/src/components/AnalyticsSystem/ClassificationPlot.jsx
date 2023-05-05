@@ -145,7 +145,6 @@ function colorRecode(color){
           .attr('transform', value => 'translate(' + xScale(value.xcoord) + ', ' + yScale(value.ycoord) + ')')
           .attr('fill', value => { return myColor(value.cluster)})},
         update => update.attr("class", "updated")
-          .transition()
           .attr("opacity", determineDotOpacity(data.length))
           .attr("stroke","black")
           .attr("stroke-opacity", 0)
