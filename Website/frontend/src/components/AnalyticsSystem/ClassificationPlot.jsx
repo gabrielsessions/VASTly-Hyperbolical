@@ -1,6 +1,6 @@
 // Import Stuff Here!
 import React, { useRef, useEffect, useState } from "react";
-import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow, symbolCircle, symbolCross, symbolSquare, symbolTriangle, symbolStar, symbolDiamond, symbolWye, symbolAsterisk, symbol} from "d3";
+import { select, axisBottom, scaleLinear, scaleSequential, scaleOrdinal, axisRight, interpolateRainbow, symbolCircle, symbolCross, symbolSquare, symbolTriangle, symbolStar, symbolDiamond, symbolWye, symbolX, symbol} from "d3";
 
 //dimension hook
 const useResizeObserver = ref => {
@@ -108,7 +108,7 @@ function colorRecode(color){
         return symbol().size(determineDotSize(data.length)).type(symbolTriangle)()
       }
       else if (value.cartype=="6"){
-        return symbol().size(determineDotSize(data.length)).type(symbolAsterisk)()
+        return symbol().size(determineDotSize(data.length)).type(symbolWye)()
       }
     }
 
@@ -132,7 +132,7 @@ function colorRecode(color){
       .selectAll(".dot")
       .data(data)
       .join(
-        enter =>{console.log("enter");console.log(colorRecode(myColor(-1)));
+        enter =>{console.log("enter");console.log(data);
         return enter.append("path")
           .attr("class", "dot")
           .attr("opacity", determineDotOpacity(data.length))
@@ -206,7 +206,7 @@ return (
           <h1>&#x25A0; 3 axle truck</h1>
           <h1>&#x2605; 4+ axle car</h1>
           <h1>&#x25B2; 2 axle bus</h1>
-          <h1>&#x25B3; 3 axle bus</h1>
+          <h1>&#x311A; 3 axle bus</h1>
           <h1>&#x25C6; park vehicle</h1>
         </div>
       </div>

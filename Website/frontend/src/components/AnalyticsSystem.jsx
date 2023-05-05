@@ -48,8 +48,7 @@ export default function AnalyticsSystem() {
   }
 
   function initialTSNEQuery() {
-    const initTSNEQuery = "SELECT * FROM car_data NATURAL JOIN sensor_data LIMIT 100;";
-    //const initTSNEQuery = "SELECT * FROM car_data;";
+    const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
