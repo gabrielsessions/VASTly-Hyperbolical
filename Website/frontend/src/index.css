@@ -11,14 +11,21 @@
   padding: 10px 10px 10px 10px;
 }
 
-svg {
+svg.scatter {
   background: #fff;
   overflow: visible;
   display: block;
   width: 40vw;
-  height: 50vh;
+  height: 65vh;
   padding-right: 60px;
+  padding-left: 15px;
 }
+
+.brush .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
 
 .scatterplot {
   display: flex;
