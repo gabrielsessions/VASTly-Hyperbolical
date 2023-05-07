@@ -6,10 +6,21 @@ import MultipleLineGraph from "./Timeline/MultipleLineGraph";
 import { schemeCategory10 } from "d3";
 
 export default function Timeline(props) {
-  const [timeRange, setTimeRange] = useState({
+  const [timeRange, setRange] = useState({
     startDate: new Date('2015-05-01'),
     endDate: new Date('2015-05-31')
   })
+
+  function setTimeRange(newObj) {
+    setRange(newObj);
+    props.setFilters((prev) => {
+      const newFilters = {...prev};
+      newFilters.timeline[0] = "sensor.timestamp" + ">=" + newObj.startDate;
+      newFilters.timeline[1] = "sensor.timestamp" + "<=" + newObj.endDate;
+
+      return newFilters;
+    })
+  }
 
   const typeMap = {
     "1": 0,
