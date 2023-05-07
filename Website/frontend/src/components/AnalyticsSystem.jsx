@@ -22,6 +22,12 @@ export default function AnalyticsSystem() {
   const [timelineQuery, setTimelineQuery] = useState(initialQuery);
   const [tableQuery, setTableQuery] = useState(initialQuery);
   const [graphQuery, setGraphQuery] = useState(initialQuery);
+  const [filters, setFilters] = useState({
+    tsne: [],
+    timeline: [],
+    table: [],
+    graph: []
+  })
 
   function executeQuery(query, callback) {
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
@@ -117,9 +123,7 @@ export default function AnalyticsSystem() {
     });
 
 
-
   } 
-
 
   function initialGraphQuery() {
 
@@ -133,6 +137,22 @@ export default function AnalyticsSystem() {
 
   }, [])
 
+  useEffect(() => {
+
+  }, [filters.tsne])
+
+  useEffect(() => {
+
+  }, [filters.timeline])
+
+  useEffect(() => {
+
+  }, [filters.table])
+
+  useEffect(() => {
+
+  }, [filters.graph])
+
   // Fetch default data from server (first 10 entries)
 
   return (
@@ -140,25 +160,23 @@ export default function AnalyticsSystem() {
       <div className="md:grid md:grid-cols-2">
         <div>
           <div className={analyticsComponentClass}>
-            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} />
+            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
           
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
-            <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE}/>
+            <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE} setFilters={setFilters} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-
-            <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} />
-
+            <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
-            <Timeline timelineQuery={timelineQuery} />
+            <Timeline timelineQuery={timelineQuery} setFilters={setFilters} />
           </div>
         </div>
       </div>
