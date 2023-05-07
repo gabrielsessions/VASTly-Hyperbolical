@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 function brushed() {
-  const selection = d3.event.selection;
+  const selection = d3.event.selection();
   if (selection) {
     const [x0, x1] = selection.map(xScale.invert);
     xScale.domain([x0, x1]);
@@ -52,8 +52,11 @@ const TimelineGraph = ({ data }) => {
       .attr("transform", `translate(${margin.left}, ${margin.top})`)
       .call(yAxis);
 
-    svg.append("path")
-      .datum(data)
+
+    //data.forEach(element => {
+      console.log(data[0]);
+      svg.append("path")
+      .datum(new Array(...data[0]))
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 3)
@@ -62,12 +65,16 @@ const TimelineGraph = ({ data }) => {
         .y(d => yScale(d.value))
       )
       .attr("transform", `translate(${margin.left}, ${margin.bottom})`);
+    //});
+
+   
 
 
   }, [data]);
 
   return (
     <svg ref={svgRef} width={500} height={200}>
+
       <g />
     </svg>
   );

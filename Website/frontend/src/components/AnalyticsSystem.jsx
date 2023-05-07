@@ -34,15 +34,24 @@ export default function AnalyticsSystem() {
   }
 
 
+  // Note: The returned data is unsorted
   function initialTimelineQuery() {
-    
+    const initTimelineQuery = "SELECT cd.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS cd, sensor_data AS sd WHERE cd.carid = sd.carid GROUP BY cd.cartype, date ORDER BY date;";
+    executeQuery(initTimelineQuery, (res) => {
+      setTimelineQuery({
+        sqlQuery: initTimelineQuery,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
+
   }
 
   function initialTableQuery() {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
-    executeQuery(initGraphQuery, (res) => {
-      setGraphQuery({
-        sqlQuery: initGraphQuery,
+    const initTableQuery = "SELECT * FROM sensor_data LIMIT 20;";
+    executeQuery(initTableQuery, (res) => {
+      setTableQuery({
+        sqlQuery: initTableQuery,
         data: res.rows,
         fields: res.fields
       });
@@ -91,15 +100,16 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
+          
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
 
-            <ClassificationPlot TSNEQuery={TSNEQuery} />
+            {/*<ClassificationPlot TSNEQuery={TSNEQuery} />*/}
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
 
-            <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />
+            {/*<DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />*/}
 
           </div>
         </div>
