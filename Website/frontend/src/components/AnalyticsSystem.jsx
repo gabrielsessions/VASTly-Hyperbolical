@@ -47,24 +47,27 @@ export default function AnalyticsSystem() {
 
   }
 
+  // to update initialTableQuery:
+  // a where statement will be updated with a global variable with selected options
+  // WHERE car.cluster = selectedCheckBoxes
+  // WHERE car.cartype = selectedLine
+   
   function initialTableQuery() {
-    const initTableQuery = "SELECT * FROM sensor_data LIMIT 20;";
+
+    const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 12;"
     executeQuery(initTableQuery, (res) => {
       setTableQuery({
         sqlQuery: initTableQuery,
         data: res.rows,
         fields: res.fields
       });
+      console.log(res.fields)
+      console.log(res.rows)
     });
-
-    const initTSNEQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry, car.xcoord, car.ycoord FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 50;"
-    // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry FROM car_data AS car NATURAL JOIN sensor_data AS sensor LIMIT 100;";
-    // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data AS car NATURAL JOIN sensor_data AS sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 10;"
-    // "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
-
   }
+
+
   function initialTSNEQuery() {
-    //const initTSNEQuery = ""; // ADD TSNE QUERY HERE!!
     const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
@@ -76,10 +79,51 @@ export default function AnalyticsSystem() {
     });
   }
 
+   function interTSNE(array){
+    let whereClause = "";
+
+    if (Array.isArray(array) && array.length > 0) {
+      whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
+    }
+
+    const newTSNEQuery = `SELECT * FROM car_data ${whereClause};`;
+    console.log(newTSNEQuery)
+    executeQuery(newTSNEQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
+      setTSNEQuery({
+        sqlQuery: newTSNEQuery,
+        data: res.rows,
+        fields: newFields
+      });
+    });
+
+    const newTableQuery = `SELECT car.carid, car.cartype, car.cluster, 
+    TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS last_entry
+    FROM car_data as car 
+    JOIN sensor_data as sensor ON car.carid = sensor.carid  ${whereClause} 
+    GROUP BY car.carid, car.cartype, car.cluster 
+    ORDER BY car.carid  
+    LIMIT 100;`;
+    console.log(newTableQuery)
+    executeQuery(newTableQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
+      setTableQuery({
+        sqlQuery: newTableQuery,
+        data: res.rows,
+        fields: newFields
+      });
+    });
+
+
+
+  } 
+
+
   function initialGraphQuery() {
 
   }
-
 
   useEffect(() => {
     initialTSNEQuery();
@@ -102,14 +146,13 @@ export default function AnalyticsSystem() {
         <div>
           
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
-
-            {/*<ClassificationPlot TSNEQuery={TSNEQuery} />*/}
+            <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE}/>
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
 
-            {/*<DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />*/}
+            <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} />
 
           </div>
         </div>
@@ -119,7 +162,7 @@ export default function AnalyticsSystem() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }
+//new thing
