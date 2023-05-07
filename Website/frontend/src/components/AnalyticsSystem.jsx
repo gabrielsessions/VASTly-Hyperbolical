@@ -58,7 +58,6 @@ export default function AnalyticsSystem() {
   
   }
   
-
   function initialTSNEQuery() {
     const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
