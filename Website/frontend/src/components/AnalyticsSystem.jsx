@@ -18,7 +18,7 @@ export default function AnalyticsSystem() {
     fields: []
   }
 
-  // const [TSNEQuery, setTSNEQuery] = useState(initialQuery);
+  const [TSNEQuery, setTSNEQuery] = useState(initialQuery);
   const [timelineQuery, setTimelineQuery] = useState(initialQuery);
   const [tableQuery, setTableQuery] = useState(initialQuery);
   const [graphQuery, setGraphQuery] = useState(initialQuery);
@@ -58,7 +58,7 @@ export default function AnalyticsSystem() {
   
   }
   
-  /*
+
   function initialTSNEQuery() {
     const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
@@ -70,7 +70,7 @@ export default function AnalyticsSystem() {
       });
     });
   }
-  */
+
 
    function nextTSNEQuery(array){
     let whereClause = "";
@@ -97,7 +97,7 @@ export default function AnalyticsSystem() {
   }
 
   useEffect(() => {
-    // initialTSNEQuery();
+    initialTSNEQuery();
     initialTableQuery();
     initialTimelineQuery();
     initialGraphQuery();
@@ -120,7 +120,7 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}
+          <div className={analyticsComponentClass}>
 
             <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} />
 
