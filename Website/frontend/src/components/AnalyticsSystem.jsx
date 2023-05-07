@@ -169,7 +169,7 @@ export default function AnalyticsSystem() {
     <div className="min-h-screen max-h-screen">
       <div className="md:grid md:grid-cols-2">
         <div>
-          <div className={analyticsComponentClass}>
+          <div className={analyticsComponentClass} style={{height: '70vh'}}>
             <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
