@@ -27,7 +27,7 @@ function RunButton(props){
       []
     );
     console.log(clusters)
-    props.nextTSNEQuery(clusters)
+    props.interTSNE(clusters)
   }
 
   return (
@@ -241,7 +241,7 @@ return (
             &#10226;
           </button>
           <br />
-          <RunButton nextTSNEQuery ={props.nextTSNEQuery} checkboxes={checkboxes}/>
+          <RunButton interTSNE ={props.interTSNE} checkboxes={checkboxes}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>
