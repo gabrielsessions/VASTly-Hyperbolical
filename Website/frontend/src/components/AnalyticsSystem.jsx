@@ -60,16 +60,15 @@ export default function AnalyticsSystem() {
   // WHERE car.cartype = selectedLine
    
   function initialTableQuery() {
-
-    const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 12;"
+    const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_exit FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 100;"
     executeQuery(initTableQuery, (res) => {
       setTableQuery({
         sqlQuery: initTableQuery,
         data: res.rows,
         fields: res.fields
       });
-      console.log(res.fields)
-      console.log(res.rows)
+      // console.log(res.fields)
+      // console.log(res.rows)
     });
   }
 
@@ -85,6 +84,7 @@ export default function AnalyticsSystem() {
       });
     });
   }
+  
 
    function interTSNE(array){
     let whereClause = "";
@@ -93,8 +93,10 @@ export default function AnalyticsSystem() {
       whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
     }
 
+
     const newTSNEQuery = `SELECT * FROM car_data as car ${whereClause};`;
     console.log(newTSNEQuery)
+
     executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
@@ -113,7 +115,7 @@ export default function AnalyticsSystem() {
     GROUP BY car.carid, car.cartype, car.cluster 
     ORDER BY car.carid  
     LIMIT 100;`;
-    console.log(newTableQuery)
+    // console.log(newTableQuery)
     executeQuery(newTableQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTableQuery({
@@ -139,9 +141,11 @@ export default function AnalyticsSystem() {
   }, [])
 
 
+
   useEffect(() => {
     console.log("FILTER: ");
     console.log(filters);
+
   }, [filters])
 
   // Fetch default data from server (first 10 entries)
