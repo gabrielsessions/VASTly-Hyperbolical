@@ -5,7 +5,13 @@
  * @param props.fields - names of the columns in the table
  */
 
+import { useEffect } from "react"
+
 export default function SimpleTable(props) {
+  useEffect(() => {
+    // console.log(props.data)
+  }, [props.data])
+  
   return (
     <div className="lg:mb-24 mb-8">
       {/* Title and query that was last run */}
