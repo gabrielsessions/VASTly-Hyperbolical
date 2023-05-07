@@ -131,7 +131,7 @@ export default function AnalyticsSystem() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }
+//new thing
