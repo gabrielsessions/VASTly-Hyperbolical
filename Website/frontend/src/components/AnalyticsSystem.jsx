@@ -60,7 +60,6 @@ export default function AnalyticsSystem() {
   
   /*
   function initialTSNEQuery() {
-    //const initTSNEQuery = ""; // ADD TSNE QUERY HERE!!
     const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
@@ -72,6 +71,26 @@ export default function AnalyticsSystem() {
     });
   }
   */
+
+   function nextTSNEQuery(array){
+    let whereClause = "";
+
+    if (Array.isArray(array) && array.length > 0) {
+      whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
+    }
+
+    const newTSNEQuery = `SELECT * FROM car_data ${whereClause};`;
+    console.log(newTSNEQuery)
+    executeQuery(newTSNEQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
+      setTSNEQuery({
+        sqlQuery: newTSNEQuery,
+        data: res.rows,
+        fields: newFields
+      });
+    });
+  } 
+
 
   function initialGraphQuery() {
 
@@ -97,12 +116,11 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
-
-          {/*  <ClassificationPlot TSNEQuery={TSNEQuery} /> */}
+            <ClassificationPlot TSNEQuery={TSNEQuery} nextTSNEQuery={nextTSNEQuery}/>
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div className={analyticsComponentClass}
 
             <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} />
 
