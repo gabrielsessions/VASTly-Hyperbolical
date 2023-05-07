@@ -27,7 +27,11 @@ function RunButton(props){
       []
     );
     console.log(clusters)
-    props.interTSNE(clusters)
+    props.setFilters((prev)=>{
+      const newFilters = [...props.filters];
+      newFilters[tsne] = clusters
+      return newFilters
+    });
   }
 
   return (
@@ -43,7 +47,6 @@ function CheckboxGroup(props) {
     props.setCheckboxes((prev)=>{
     const newCheckboxes = [...props.checkboxes];
     newCheckboxes[index] = !newCheckboxes[index];
-    console.log(newCheckboxes)
     return newCheckboxes });
   }
 
@@ -202,7 +205,7 @@ export default function ClassificationPlot(props) {
       .selectAll(".dot")
       .data(data)
       .join(
-        enter =>{console.log("enter");console.log(data);
+        enter =>{console.log("enter");
         return enter.append("path")
           .attr("class", "dot")
           .attr("opacity", determineDotOpacity(data.length))
