@@ -165,7 +165,7 @@ return (
   <React.Fragment>
     <div className="scatterplot">
       <div className = "legend" id="clusters">
-
+        <h1>DBSCAN Clusters</h1>
         <div className="checks">
           <div className = "col1">
             <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> N/A</label><br />
@@ -213,7 +213,7 @@ return (
         </div>
       </div>
       <div className="pointplot scatter">
-        <svg ref={svgRef} width="35vw" height="50vh" className="scatter">
+        <svg ref={svgRef} width="35vw" height="75vh" className="scatter">
 {/*           <g className="x-axis" />
           <g className="y-axis" />  */}
         </svg>
