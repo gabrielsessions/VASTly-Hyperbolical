@@ -123,9 +123,7 @@ export default function AnalyticsSystem() {
     });
 
 
-
   } 
-
 
   function initialGraphQuery() {
 
@@ -138,6 +136,22 @@ export default function AnalyticsSystem() {
     initialGraphQuery();
 
   }, [])
+
+  useEffect(() => {
+
+  }, [filters.tsne])
+
+  useEffect(() => {
+
+  }, [filters.timeline])
+
+  useEffect(() => {
+
+  }, [filters.table])
+
+  useEffect(() => {
+
+  }, [filters.graph])
 
   // Fetch default data from server (first 10 entries)
 
