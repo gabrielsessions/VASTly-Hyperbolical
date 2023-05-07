@@ -27,6 +27,7 @@ function RunButton(props){
       []
     );
     console.log(clusters)
+    props.nextTSNEQuery(clusters)
   }
 
   return (
@@ -195,6 +196,8 @@ export default function ClassificationPlot(props) {
       .call(yAxis);
 
     //draw points
+    svg.selectAll(".dot").remove();
+
     svg
       .selectAll(".dot")
       .data(data)
@@ -238,7 +241,7 @@ return (
             &#10226;
           </button>
           <br />
-          <RunButton clusterPass ={props.clusterPass} checkboxes={checkboxes}/>
+          <RunButton nextTSNEQuery ={props.nextTSNEQuery} checkboxes={checkboxes}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>

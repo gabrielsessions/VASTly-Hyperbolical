@@ -66,21 +66,18 @@ export default function AnalyticsSystem() {
     });
   }
 
-/*   function nextTSNEQuery(){
-    const newTSNEQuery = "SELECT * FROM car_data WHERE;";
-    executeQuery(initTSNEQuery, (res) => {
+   function nextTSNEQuery(array){
+    const newTSNEQuery = "SELECT * FROM car_data LIMIT 20;";
+    executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
-        sqlQuery: initTSNEQuery,
+        sqlQuery: newTSNEQuery,
         data: res.rows,
         fields: newFields
       });
     });
-  } */
+  } 
 
-  function clusterPass(array){
-
-  }
 
   function initialGraphQuery() {
 
@@ -108,7 +105,7 @@ export default function AnalyticsSystem() {
         <div>
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
 
-            <ClassificationPlot TSNEQuery={TSNEQuery} clusterPass={clusterPass}/>
+            <ClassificationPlot TSNEQuery={TSNEQuery} nextTSNEQuery={nextTSNEQuery}/>
 
           </div>
         </div>
