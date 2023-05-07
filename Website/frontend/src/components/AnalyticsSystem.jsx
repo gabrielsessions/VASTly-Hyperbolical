@@ -54,10 +54,9 @@ export default function AnalyticsSystem() {
       console.log(res.fields)
       console.log(res.rows)
     });
-
-  
   }
-  
+
+
   function initialTSNEQuery() {
     const initTSNEQuery = "SELECT * FROM car_data;";
     executeQuery(initTSNEQuery, (res) => {
@@ -70,8 +69,7 @@ export default function AnalyticsSystem() {
     });
   }
 
-
-   function nextTSNEQuery(array){
+   function interTSNE(array){
     let whereClause = "";
 
     if (Array.isArray(array) && array.length > 0) {
@@ -88,6 +86,28 @@ export default function AnalyticsSystem() {
         fields: newFields
       });
     });
+
+    const newTableQuery = `SELECT car.carid, car.cartype, car.cluster, 
+    TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS last_entry
+    FROM car_data as car 
+    JOIN sensor_data as sensor ON car.carid = sensor.carid  ${whereClause} 
+    GROUP BY car.carid, car.cartype, car.cluster 
+    ORDER BY car.carid  
+    LIMIT 100;`;
+    console.log(newTableQuery)
+    executeQuery(newTableQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
+      setTableQuery({
+        sqlQuery: newTableQuery,
+        data: res.rows,
+        fields: newFields
+      });
+    });
+
+
+
   } 
 
 
@@ -115,7 +135,7 @@ export default function AnalyticsSystem() {
         </div>
         <div>
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
-            <ClassificationPlot TSNEQuery={TSNEQuery} nextTSNEQuery={nextTSNEQuery}/>
+            <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE}/>
           </div>
         </div>
         <div>
