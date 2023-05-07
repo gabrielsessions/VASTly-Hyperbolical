@@ -23,8 +23,9 @@ export default function AnalyticsSystem() {
   const [tableQuery, setTableQuery] = useState(initialQuery);
   const [graphQuery, setGraphQuery] = useState(initialQuery);
   const [filters, setFilters] = useState({
+
     tsne: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
-    timeline: [],
+    timeline: ["", "", ""],
     table: [],
     graph: []
   })
@@ -137,21 +138,11 @@ export default function AnalyticsSystem() {
 
   }, [])
 
-  useEffect(() => {
-
-  }, [filters.tsne])
 
   useEffect(() => {
-
-  }, [filters.timeline])
-
-  useEffect(() => {
-
-  }, [filters.table])
-
-  useEffect(() => {
-
-  }, [filters.graph])
+    console.log("FILTER: ");
+    console.log(filters);
+  }, [filters])
 
   // Fetch default data from server (first 10 entries)
 
