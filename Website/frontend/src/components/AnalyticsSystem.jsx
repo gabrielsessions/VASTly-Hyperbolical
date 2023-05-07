@@ -24,7 +24,7 @@ export default function AnalyticsSystem() {
   const [graphQuery, setGraphQuery] = useState(initialQuery);
   const [filters, setFilters] = useState({
 
-    tsne: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    TSNE: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
     timeline: ["", "", ""],
     table: [],
     graph: []
@@ -93,7 +93,7 @@ export default function AnalyticsSystem() {
       whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
     }
 
-    const newTSNEQuery = `SELECT * FROM car_data ${whereClause};`;
+    const newTSNEQuery = `SELECT * FROM car_data as car ${whereClause};`;
     console.log(newTSNEQuery)
     executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);

@@ -26,10 +26,16 @@ function RunButton(props){
       (acc, val, index) => (val ? acc.concat(index-1) : acc),
       []
     );
-    console.log(clusters)
+  
+    let filterClause = "";
+
+    if (Array.isArray(clusters) && clusters.length > 0) {
+      filterClause = `car.cluster IN (${clusters.map((item) => `${item}`).join(", ")})`;
+    }
+    console.log(filterClause)
     props.setFilters((prev)=>{
-      const newFilters = [...props.filters];
-      newFilters[tsne] = clusters
+      const newFilters = {...props.filters};
+      newFilters["TSNE"] = filterClause
       return newFilters
     });
   }
@@ -244,7 +250,7 @@ return (
             &#10226;
           </button>
           <br />
-          <RunButton interTSNE ={props.interTSNE} checkboxes={checkboxes}/>
+          <RunButton interTSNE ={props.interTSNE} checkboxes={checkboxes} setFilters={props.setFilters}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>
