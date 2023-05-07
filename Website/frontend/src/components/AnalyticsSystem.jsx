@@ -67,7 +67,14 @@ export default function AnalyticsSystem() {
   }
 
    function nextTSNEQuery(array){
-    const newTSNEQuery = "SELECT * FROM car_data LIMIT 20;";
+    let whereClause = "";
+
+    if (Array.isArray(array) && array.length > 0) {
+      whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
+    }
+
+    const newTSNEQuery = `SELECT * FROM car_data ${whereClause};`;
+    console.log(newTSNEQuery)
     executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
