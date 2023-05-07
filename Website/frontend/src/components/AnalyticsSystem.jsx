@@ -34,8 +34,17 @@ export default function AnalyticsSystem() {
   }
 
 
+  // Note: The returned data is unsorted
   function initialTimelineQuery() {
-    
+    const initTimelineQuery = "SELECT cd.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS cd, sensor_data AS sd WHERE cd.carid = sd.carid GROUP BY cd.cartype, date ORDER BY date;";
+    executeQuery(initTimelineQuery, (res) => {
+      setTimelineQuery({
+        sqlQuery: initTimelineQuery,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
+
   }
 
   // to update initialTableQuery:
@@ -44,6 +53,7 @@ export default function AnalyticsSystem() {
   // WHERE car.cartype = selectedLine
    
   function initialTableQuery() {
+
     const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 12;"
     executeQuery(initTableQuery, (res) => {
       setTableQuery({
@@ -134,6 +144,7 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
+          
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
             <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE}/>
           </div>
