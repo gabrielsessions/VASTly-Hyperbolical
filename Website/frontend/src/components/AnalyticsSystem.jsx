@@ -66,6 +66,22 @@ export default function AnalyticsSystem() {
     });
   }
 
+/*   function nextTSNEQuery(){
+    const newTSNEQuery = "SELECT * FROM car_data WHERE;";
+    executeQuery(initTSNEQuery, (res) => {
+      const newFields = res.fields.map((e) => e.name);
+      setTSNEQuery({
+        sqlQuery: initTSNEQuery,
+        data: res.rows,
+        fields: newFields
+      });
+    });
+  } */
+
+  function clusterPass(array){
+
+  }
+
   function initialGraphQuery() {
 
   }
@@ -92,13 +108,14 @@ export default function AnalyticsSystem() {
         <div>
           <div className={analyticsComponentClass} style={{height: '70vh'}}>
 
-            <ClassificationPlot TSNEQuery={TSNEQuery} />
+            <ClassificationPlot TSNEQuery={TSNEQuery} clusterPass={clusterPass}/>
+
           </div>
         </div>
         <div>
           <div className={analyticsComponentClass}>
 
-            <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} />
+            {/* <DataTable tableQuery={tableQuery} setTSNEQuery={setTSNEQuery} TSNEQuery={TSNEQuery} executeQuery={executeQuery} /> */}
 
           </div>
         </div>

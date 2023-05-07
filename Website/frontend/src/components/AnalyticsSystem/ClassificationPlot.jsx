@@ -20,25 +20,36 @@ const useResizeObserver = ref => {
   return dimensions;
 }
 
-function CheckboxGroup() {
-  const [checkboxes, setCheckboxes] = useState(
-    new Array(20).fill(true)
-  );
+function RunButton(props){
+  function handleClick(){
+    const clusters = props.checkboxes.reduce(
+      (acc, val, index) => (val ? acc.concat(index-1) : acc),
+      []
+    );
+    console.log(clusters)
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">Run</button>
+    </div>
+  )
+}
+
+function CheckboxGroup(props) {
 
   function handleCheckboxChange(index) {
-    setCheckboxes((prev)=>{
-    const newCheckboxes = [...checkboxes];
+    props.setCheckboxes((prev)=>{
+    const newCheckboxes = [...props.checkboxes];
     newCheckboxes[index] = !newCheckboxes[index];
     console.log(newCheckboxes)
     return newCheckboxes });
   }
 
   return (
-    <div>
-
         <div className="checks">
           <div className = "col1">
-            {checkboxes.slice(0, 10).map((checked, index) => (
+            {props.checkboxes.slice(0, 10).map((checked, index) => (
               <div key={index}>
                 <input
                   type="checkbox"
@@ -53,7 +64,7 @@ function CheckboxGroup() {
           </div>
           <br/>
           <div className = "col2">
-            {checkboxes.slice(10).map((checked, index) => (
+            {props.checkboxes.slice(10).map((checked, index) => (
               <div key={index + 10}>
                 <input
                   type="checkbox"
@@ -67,8 +78,6 @@ function CheckboxGroup() {
           ))}
           </div>
         </div>
-
-    </div>
   );
 }
 
@@ -102,6 +111,10 @@ function colorRecode(color){
 }
 
 export default function ClassificationPlot(props) {
+  const [checkboxes, setCheckboxes] = useState(
+    new Array(20).fill(true)
+  );
+
   const svgRef = useRef();
   const dimensions = useResizeObserver(svgRef)
 
@@ -218,42 +231,14 @@ return (
     <div className="scatterplot">
       <div className = "legend" id="clusters">
         <h1>DBSCAN Clusters</h1>
-        <div className="checks">
-          {CheckboxGroup()}
-          {/* <div className = "col1">
-            <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> N/A</label><br />
-            <label ><input type="checkbox" value="0" style={{"color":colorRecode(myColor(0)), "background-color": colorRecode(myColor(0))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 0</label><br />
-            <label ><input type="checkbox" value="1" style={{"color":colorRecode(myColor(1)), "background-color": colorRecode(myColor(1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 1</label><br />
-            <label ><input type="checkbox" value="2" style={{"color":colorRecode(myColor(2)), "background-color": colorRecode(myColor(2))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 2</label><br />
-            <label ><input type="checkbox" value="3" style={{"color":colorRecode(myColor(3)), "background-color": colorRecode(myColor(3))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 3</label><br />
-            <label ><input type="checkbox" value="4" style={{"color":colorRecode(myColor(4)), "background-color": colorRecode(myColor(4))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 4</label><br />
-            <label ><input type="checkbox" value="5" style={{"color":colorRecode(myColor(5)), "background-color": colorRecode(myColor(5))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 5</label><br />
-            <label ><input type="checkbox" value="6" style={{"color":colorRecode(myColor(6)), "background-color": colorRecode(myColor(6))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 6</label><br />
-            <label ><input type="checkbox" value="7" style={{"color":colorRecode(myColor(7)), "background-color": colorRecode(myColor(7))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 7</label><br />
-            <label ><input type="checkbox" value="8" style={{"color":colorRecode(myColor(8)), "background-color": colorRecode(myColor(8))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 8</label><br />
-          </div>
-          <div className = "col2">
-            <label ><input type="checkbox" value="9" style={{"color":colorRecode(myColor(9)), "background-color": colorRecode(myColor(9))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 9</label><br />
-            <label ><input type="checkbox" value="10" style={{"color":colorRecode(myColor(10)), "background-color": colorRecode(myColor(10))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 10</label><br />
-            <label ><input type="checkbox" value="11" style={{"color":colorRecode(myColor(11)), "background-color": colorRecode(myColor(11))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 11</label><br />
-            <label ><input type="checkbox" value="12" style={{"color":colorRecode(myColor(12)), "background-color": colorRecode(myColor(12))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 12</label><br />
-            <label ><input type="checkbox" value="13" style={{"color":colorRecode(myColor(13)), "background-color": colorRecode(myColor(13))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 13</label><br />
-            <label ><input type="checkbox" value="14" style={{"color":colorRecode(myColor(14)), "background-color": colorRecode(myColor(14))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 14</label><br />
-            <label ><input type="checkbox" value="15" style={{"color":colorRecode(myColor(15)), "background-color": colorRecode(myColor(15))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 15</label><br />
-            <label ><input type="checkbox" value="16" style={{"color":colorRecode(myColor(16)), "background-color": colorRecode(myColor(16))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 16</label><br />
-            <label ><input type="checkbox" value="17" style={{"color":colorRecode(myColor(17)), "background-color": colorRecode(myColor(17))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 17</label><br />
-            <label ><input type="checkbox" value="18" style={{"color":colorRecode(myColor(18)), "background-color": colorRecode(myColor(18))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 18</label><br />
-          </div> */}
-        </div>
+        <CheckboxGroup checkboxes={checkboxes} setCheckboxes={setCheckboxes}/>
         <br />
         <div className='buttons'> 
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
             &#10226;
           </button>
           <br />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
-            Run
-          </button>
+          <RunButton clusterPass ={props.clusterPass} checkboxes={checkboxes}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>
