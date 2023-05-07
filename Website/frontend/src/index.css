@@ -21,6 +21,21 @@ svg.scatter {
   padding-left: 5px;
 }
 
+svg.lineplot{
+  width: 50vw;
+  height: 65vh;
+}
+
+.liney{
+  width: 50vw;
+  height: 50vh;
+}
+
+.linegraph{
+  width: 50vw;
+  height: 50vh;
+}
+
 .scatterplot {
   display: flex;
 }

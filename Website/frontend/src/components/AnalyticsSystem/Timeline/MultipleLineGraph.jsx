@@ -184,8 +184,8 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
   }, [data]);
 
   return (
-    <div>
-      <div ref={svgRef}></div>
+    <div class="liney">
+      <svg ref={svgRef} className="lineplot"></svg>
     </div>
   );
 };
