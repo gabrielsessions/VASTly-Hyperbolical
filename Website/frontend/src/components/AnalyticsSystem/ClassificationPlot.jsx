@@ -20,17 +20,56 @@ const useResizeObserver = ref => {
   return dimensions;
 }
 
-export default function ClassificationPlot(props) {
-  const svgRef = useRef();
-  const dimensions = useResizeObserver(svgRef)
+function CheckboxGroup() {
+  const [checkboxes, setCheckboxes] = useState(
+    new Array(20).fill(true)
+  );
 
-  function calcMinMax(data){
-    var xMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.xcoord))))
-    var xMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.xcoord))))
-    var yMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.ycoord))))
-    var yMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.ycoord))))
+  function handleCheckboxChange(index) {
+    setCheckboxes((prev)=>{
+    const newCheckboxes = [...checkboxes];
+    newCheckboxes[index] = !newCheckboxes[index];
+    console.log(newCheckboxes)
+    return newCheckboxes });
+  }
 
-    return [xMin,xMax,yMin,yMax]
+  return (
+    <div>
+
+        <div className="checks">
+          <div className = "col1">
+            {checkboxes.slice(0, 10).map((checked, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  value={index-1}
+                  style={{"color":colorRecode(myColor(index-1)), "background-color": colorRecode(myColor(index-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}
+                  checked={checked}
+                  onChange={() => handleCheckboxChange(index)}
+                />
+                <label>{index - 1}</label>
+              </div>
+            ))}
+          </div>
+          <br/>
+          <div className = "col2">
+            {checkboxes.slice(10).map((checked, index) => (
+              <div key={index + 10}>
+                <input
+                  type="checkbox"
+                  value={index+9}
+                  style={{"color":colorRecode(myColor(index+9)), "background-color": colorRecode(myColor(index+9))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}
+                  checked={checked}
+                  onChange={() => handleCheckboxChange(index + 10)}
+                />
+                <label>{index + 9}</label>
+              </div>
+          ))}
+          </div>
+        </div>
+
+    </div>
+  );
 }
 
 var myColor = scaleSequential()
@@ -60,6 +99,19 @@ function colorRecode(color){
   const integers = matches.map(Number); // Convert each match to a number
   
   return rgbToHex(integers);
+}
+
+export default function ClassificationPlot(props) {
+  const svgRef = useRef();
+  const dimensions = useResizeObserver(svgRef)
+
+  function calcMinMax(data){
+    var xMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.xcoord))))
+    var xMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.xcoord))))
+    var yMin = Math.floor(Math.min(...Object.values(data).map(point => parseFloat(point.ycoord))))
+    var yMax = Math.ceil(Math.max(...Object.values(data).map(point => parseFloat(point.ycoord))))
+
+    return [xMin,xMax,yMin,yMax]
 }
 
   useEffect(() => {
@@ -167,7 +219,8 @@ return (
       <div className = "legend" id="clusters">
         <h1>DBSCAN Clusters</h1>
         <div className="checks">
-          <div className = "col1">
+          {CheckboxGroup()}
+          {/* <div className = "col1">
             <label ><input type="checkbox" value="-1" style={{"color":colorRecode(myColor(-1)), "background-color": colorRecode(myColor(-1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> N/A</label><br />
             <label ><input type="checkbox" value="0" style={{"color":colorRecode(myColor(0)), "background-color": colorRecode(myColor(0))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 0</label><br />
             <label ><input type="checkbox" value="1" style={{"color":colorRecode(myColor(1)), "background-color": colorRecode(myColor(1))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 1</label><br />
@@ -190,7 +243,7 @@ return (
             <label ><input type="checkbox" value="16" style={{"color":colorRecode(myColor(16)), "background-color": colorRecode(myColor(16))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 16</label><br />
             <label ><input type="checkbox" value="17" style={{"color":colorRecode(myColor(17)), "background-color": colorRecode(myColor(17))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 17</label><br />
             <label ><input type="checkbox" value="18" style={{"color":colorRecode(myColor(18)), "background-color": colorRecode(myColor(18))}} className={`w-4 h-4 border-gray-300 rounded focus:ring-0 focus:ring-offset-0`}/> 18</label><br />
-          </div>
+          </div> */}
         </div>
         <br />
         <div className='buttons'> 
