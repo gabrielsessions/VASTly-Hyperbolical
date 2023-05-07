@@ -24,7 +24,7 @@ export default function AnalyticsSystem() {
   const [graphQuery, setGraphQuery] = useState(initialQuery);
   const [filters, setFilters] = useState({
 
-    TSNE: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    TSNE: [],
     timeline: ["", "", ""],
     table: [],
     graph: []
@@ -180,12 +180,12 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div className={analyticsComponentClass} style={{height: '60vh'}}>
             <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div className={analyticsComponentClass} style={{height: '60vh'}}>
             <Timeline timelineQuery={timelineQuery} setFilters={setFilters} />
           </div>
         </div>
