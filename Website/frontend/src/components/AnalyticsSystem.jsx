@@ -148,6 +148,21 @@ export default function AnalyticsSystem() {
 
   }, [filters])
 
+
+  function generateTSNEQuery() {
+    const base = "SELECT * FROM car_data";
+
+  }
+
+  function generateTimelineQuery() {
+    const base = "SELECT car.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS car, sensor_data AS sensor";
+    const whereClause = ["car.carid = sensor.carid"];
+
+    const groupOrderBy = "GROUP BY car.cartype, date ORDER BY date;";
+  }
+
+
+
   // Fetch default data from server (first 10 entries)
 
   return (
