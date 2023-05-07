@@ -49,10 +49,10 @@ export default function AnalyticsSystem() {
 
 
 
-  useEffect(() => {
-    const initGraphQuery = "SELECT * FROM sensor_data LIMIT 20;";
+  function initialTableQuery() {
+    const initGraphQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid LIMIT 50;";
     executeQuery(initGraphQuery, (res) => {
-      setGraphQuery({
+      setTableQuery({
         sqlQuery: initGraphQuery,
         data: res.rows,
         fields: res.fields
