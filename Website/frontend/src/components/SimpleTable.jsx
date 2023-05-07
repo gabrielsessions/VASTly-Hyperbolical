@@ -9,7 +9,7 @@ export default function SimpleTable(props) {
   return (
     <div className="lg:mb-24 mb-8">
       {/* Title and query that was last run */}
-      <h1 className="text-center text-2xl block">Query Results</h1>
+      {/* <h1 className="text-center text-2xl block">Query Results</h1> */}
       <div className="bg-gray-100 flex mx-8 rounded p-4 shadow">
       
 

@@ -55,8 +55,9 @@ const data = [
 
 export default function DataTable(props) {
 
-  const [selectedRowData, setSelectedRowData] = useState("");
+  // selectedRow will be input into GraphQuery to visualize the path of 1 car
 
+  const [selectedRowData, setSelectedRowData] = useState("");
   const getChosenRowData = selectedRow => {
     setSelectedRowData(selectedRow);
   };
@@ -69,6 +70,7 @@ export default function DataTable(props) {
 
   var queryTwo = `SELECT * FROM sensor_data AS sensor WHERE sensor.carid = '${getChosenRowData}'`
 
+  /*
   function getResult(res) {
     props.setTSNEQuery({
       sqlQuery: queryOne,
@@ -77,6 +79,7 @@ export default function DataTable(props) {
       
     });
   }
+  */
 
   function getGraphResult(res) {
     props.setGraphQuery({
@@ -90,16 +93,16 @@ export default function DataTable(props) {
 
   /** define new function, use it as callback to execute query */
   useEffect(() => {
-    console.log(props.TSNEQuery.data)
+    console.log(props.tableQuery.data)
     //props.executeQuery(queryOne, getResult);
-  }, [props.TSNEQuery])
+  }, [props.tableQuery])
 
     /** update function to state of graphQuery function */
 
 
   /** send selected data from selected car id to graph query */
 
-  console.log(props.TSNEQuery.fields);
+  console.log(props.tableQuery.fields);
 
 
   return (
@@ -109,7 +112,7 @@ export default function DataTable(props) {
     
         <div class = "h-96 overflow-y-auto" > 
         
-        <SimpleTable data = {props.TSNEQuery.data} fields = {['carid', 'cartype', 'cluster', 'first_entry', 'last_entry']} getChosenRowData = {getChosenRowData} getGraphResult = {getGraphResult}/>
+        <SimpleTable data = {props.tableQuery.data} fields = {['carid', 'cartype', 'cluster', 'first_entry', 'last_entry']} getChosenRowData = {getChosenRowData} />
         
         </div> 
         
