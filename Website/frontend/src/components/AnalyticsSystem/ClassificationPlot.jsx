@@ -123,7 +123,7 @@ function colorRecode(color){
 
 export default function ClassificationPlot(props) {
   const [checkboxes, setCheckboxes] = useState(
-    new Array(20).fill(true)
+    new Array(20).fill(false)
   );
 
   const svgRef = useRef();
