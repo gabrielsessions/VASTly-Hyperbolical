@@ -126,13 +126,7 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
         }
       })
       .on('end', ({ selection }) => {
-        console.log(selection);
-        console.log(!selection)
         if (selection) {
-          console.log(xScale.invert(selection[0]))
-          console.log(xScale.invert(selection[1]))
-          //setSelectedRange(null);
-          //updateChart(data);
           setTimeRange({
             startDate: xScale.invert(selection[0]).toISOString(),
             endDate: xScale.invert(selection[1]).toISOString()

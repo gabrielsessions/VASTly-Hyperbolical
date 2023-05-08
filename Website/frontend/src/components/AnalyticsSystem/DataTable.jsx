@@ -61,7 +61,6 @@ export default function DataTable(props) {
   const getChosenRowData = selectedRow => {
     setSelectedRowData(selectedRow);
 
-    console.log(selectedRowData)
   };
   
       
@@ -93,18 +92,11 @@ export default function DataTable(props) {
     });
   }
 
-  /** define new function, use it as callback to execute query */
-  useEffect(() => {
-    console.log(props.tableQuery.data)
-    //props.executeQuery(queryOne, getResult);
-  }, [props.tableQuery])
-
     /** update function to state of graphQuery function */
 
 
   /** send selected data from selected car id to graph query */
 
-  console.log(props.tableQuery.fields);
 
 
   return (

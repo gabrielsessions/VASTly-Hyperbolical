@@ -141,9 +141,6 @@ export default function AnalyticsSystem() {
   const [loaded, setLoaded] = useState(0);
 
   useEffect(() => {
-
-    console.log("FILTER: ");
-    console.log(filters);
     runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
@@ -158,7 +155,6 @@ export default function AnalyticsSystem() {
     let where = initWhere;
     //const whereArrs = Object.values(filters);
     for (let i = 0; i < allowedWheres.length; i++) {
-      console.log(filters[allowedWheres[i]])
       for (let j = 0; j < filters[allowedWheres[i]].length; j++) {
         if (where === initWhere && filters[allowedWheres[i]][j] !== "") {
           where += " " + filters[allowedWheres[i]][j];
@@ -193,7 +189,6 @@ export default function AnalyticsSystem() {
   function runTSNEQuery(where) {
     const base = "SELECT DISTINCT car.carid, car.cluster, car.cartype, car.xcoord, car.ycoord FROM car_data as car NATURAL JOIN sensor_data AS sensor";
     const query = base + where
-    console.log(query);
     executeQuery(query, (res) => {
       setTSNEQuery({
         sqlQuery: query,
@@ -216,7 +211,6 @@ export default function AnalyticsSystem() {
     LIMIT 100;`
 
     const query = base + where + groupOrderLimit;
-    console.log(query);
     executeQuery(query, (res) => {
       setTableQuery({
         sqlQuery: query,

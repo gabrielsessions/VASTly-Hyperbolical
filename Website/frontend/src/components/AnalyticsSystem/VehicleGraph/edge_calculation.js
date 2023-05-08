@@ -1,10 +1,8 @@
 // Requires a sorted rows array as input by carid and timestamp
 export default function edge_calculation(rows) {
   if (typeof rows !== "object") {
-    console.log(rows);
     return;
   }
-  console.log(rows);
   const edges = {};
   let prev = "";
   rows.forEach(element => {
@@ -27,7 +25,6 @@ export default function edge_calculation(rows) {
   for (let i = 0; i < edgesKeys.length; i++) {
     const srcDest = edgesKeys[i].split(":");
     newEdges[i] = { id: edgesKeys[i], source: srcDest[0], target: srcDest[1], animated: true, style: { strokeWidth: edges[edgesKeys[i]]/maxWeight + 1 } }
-    console.log(newEdges[i])
   }
 
   console.log(newEdges);
