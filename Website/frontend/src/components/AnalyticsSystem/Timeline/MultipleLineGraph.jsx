@@ -1,30 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-/*
-const data = [
-  {
-    values: [
-      { date: '2022-01-01', value: 10 },
-      { date: '2022-01-02', value: 20 },
-      { date: '2022-01-03', value: 30 },
-      { date: '2022-01-04', value: 40 },
-      { date: '2022-01-05', value: 50 },
-    ],
-    color: 'red',
-  },
-  {
-
-    values: [
-      { date: '2022-01-01', value: 20 },
-      { date: '2022-01-02', value: 30 },
-      { date: '2022-01-03', value: 40 },
-      { date: '2022-01-04', value: 50 },
-      { date: '2022-01-05', value: 60 },
-    ],
-    color: 'blue',
-  },
-];
-*/
 
 function brushed() {
   const selection = d3.event.selection();
@@ -36,7 +11,17 @@ function brushed() {
   }
 }
 
-const MultipleLinePlot = ({ data, setTimeRange }) => {
+const carTypeNameToNum = {
+  "2 Axle Car": "1",
+  "2 Axle Truck": "2",
+  "2 Axle Park Truck": "2P",
+  "3 Axle Truck": "3",
+  "4+ Axle Truck": "4",
+  "2 Axle Bus": "5",
+  "3 Axle Bus": "6"
+}
+
+const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
   const svgRef = useRef();
 
   useEffect(() => {
@@ -67,7 +52,11 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
       .tickFormat(d3.timeFormat('%Y-%m'));
 
     const yAxis = d3.axisLeft(yScale);
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
@@ -156,7 +145,11 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
       .attr('d', d => line(d.values))
       .style('stroke', (d, i) => d3.schemeCategory10[i])
       .style('stroke-width', 2)
-      .style('fill', 'none');
+      .style('fill', 'none')
+      .on('click', (e, i) => {
+        console.log(carTypeNameToNum[i.name]);
+        selectCarType(carTypeNameToNum[i.name]);
+      });
 
     // Add legend
     const legend = svg.append('g')
