@@ -164,23 +164,13 @@ export default function AnalyticsSystem() {
         }
       }
     }
-    /*
-    console.log(allowedWheres);
-    allowedWheres.forEach(view => {
-      console.log(filters[view], view);
-      filters[view].forEach(element => {
-        
-      });
-      
-    });
-    */
     if (where === initWhere)
       return " ";
     return where + " ";
   }
 
   function runTSNEQuery(where) {
-    const base = "SELECT * FROM car_data as car";
+    const base = "SELECT DISTINCT car.carid, car.cluster, car.cartype, car.xcoord, car.ycoord FROM car_data as car NATURAL JOIN sensor_data AS sensor";
     const query = base + where
     console.log(query);
     executeQuery(query, (res) => {
