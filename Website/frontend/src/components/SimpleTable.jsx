@@ -43,7 +43,7 @@ export default function SimpleTable(props) {
                   // update w/ car.carid = ____
                   <tr onClick={() => props.setFilters((prev) => {
                     const newFilters = {...prev};
-                    newFilters["table"] = ["car.carid = '" +(elem["carid"]) + "'"]
+                    newFilters["table"] = ["carid = '" +(elem["carid"]) + "'"]
                     return newFilters
                   })} class="hover:bg-gray-200">
                     

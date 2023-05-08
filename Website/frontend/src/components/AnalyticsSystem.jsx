@@ -128,16 +128,14 @@ export default function AnalyticsSystem() {
 
 
 
+  const [loaded, setLoaded] = useState(0);
 
   useEffect(() => {
     runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
-<<<<<<< Updated upstream
-=======
     runGraphQuery(generateWhereClause(filters, ["table"]), loaded);
     setLoaded((prev) => prev + 1);
->>>>>>> Stashed changes
 
 
   }, [filters])
@@ -161,8 +159,7 @@ export default function AnalyticsSystem() {
     return where + " ";
   }
 
-<<<<<<< Updated upstream
-=======
+
   function runGraphQuery(where, loaded) {
     if (loaded >= 2) {
 
@@ -170,6 +167,7 @@ export default function AnalyticsSystem() {
       const order = "ORDER BY carid, timestamp";
       const query = base + where + order
       
+
       console.log("Graph Query");
       console.log(query);
       executeQuery(query, (res) => {
@@ -182,7 +180,7 @@ export default function AnalyticsSystem() {
     }
   }
 
->>>>>>> Stashed changes
+
   function runTSNEQuery(where) {
     const base = "SELECT DISTINCT car.carid, car.cluster, car.cartype, car.xcoord, car.ycoord FROM car_data as car NATURAL JOIN sensor_data AS sensor";
     const query = base + where
