@@ -51,6 +51,7 @@ export default function Canvas(props) {
         proOptions={{ hideAttribution: true }}
         onNodeClick={(e, node) => {
           setEdges((prev) => {
+            setDisplayText("")
             const newEdges = defaultEdges.filter((elem) => {
               return elem.source === node.id || elem.target === node.id
             })
@@ -67,48 +68,51 @@ export default function Canvas(props) {
                 sumOfCounts.push(elem.count);
               })
             }
-            
+
+            console.log(sumOfCounts);
+
 
             setDisplayText(
               <div>
                 <p>{node.id}</p>
                 {
-                  props.graphQuery.sqlQuery === "" ?
-                  <p># of Vehicles: {sumOfCounts}</p> :
-                  sumOfCounts.map((elem, i) => {
-                    const timestamp = new Date(elem);
-                    return (<p key={i}>{timestamp.toLocaleTimeString()}</p>)
-                  })
+                  props.graphQuery.sqlQuery === "" || props.graphQuery.sqlQuery === " " ?
+                    <p># of Vehicles: {sumOfCounts}</p> :
+                    sumOfCounts.map((elem, i) => {
+                      const timestamp = new Date(elem);
+                      return (<p key={i}>{timestamp.toLocaleTimeString()}</p>)
+                    })
                 }
-                
+
               </div>
             );
 
             return newEdges;
           })
         }}
-        onNodeDoubleClick={() => setEdges(defaultEdges)}
+        onNodeDoubleClick={() => {
+          setDisplayText("")
+          setEdges(defaultEdges)
+        }}
         onEdgeClick={(e, edge) => {
           setDisplayText(
             <div>
               <p>{edge.source} to</p>
-              
+              <p>{edge.target}</p>
+
               {
-                props.graphQuery.sqlQuery !== "" ?
-                <p className='mb-2'>{edge.target}</p>:
-                
-                  (edge.count).map((elem, index) => {
-                    const timestamp = new Date(elem);
-                    const timestampString = timestamp.toLocaleTimeString();
-                    return  <p class={"block"}key={index}>{timestampString}</p>
-                      
-                    
-                  }
-                    
-                  )
-                
+                defaultEdges == initialEdges ?
+                  <div>
+                    <p># of Vehicles: {edge.count}</p>
+                  </div>
+                  :
+                <div />
+                  
+
+                  
+
               }
-              
+
             </div>
           );
         }}
@@ -123,9 +127,9 @@ export default function Canvas(props) {
                 <div className='flex justify-center'>
                   {displayText}
                 </div>
-                
+
               </div>
-            :
+              :
               <div />
           }
 
@@ -133,13 +137,14 @@ export default function Canvas(props) {
 
         </div>
         {
-        <ControlButtons
-          reset={() => {
-            setEdges(initialEdges);
-            setDefaultEdges(initialEdges)
-            setDisplayText("");
-          }}
-        />
+          <ControlButtons
+            reset={() => {
+              //props.clearGraphQuery();
+              setEdges(initialEdges);
+              setDefaultEdges(initialEdges)
+              setDisplayText("");
+            }}
+          />
         }
       </ReactFlow>
     </div>
