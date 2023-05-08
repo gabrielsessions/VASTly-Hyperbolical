@@ -46,15 +46,16 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
 
 
     d3.selectAll('.line').remove();
-    
+    d3.selectAll(".axis").remove();
 
     const svg = d3.select(svgRef.current)
       .selectAll('svg')
       .data([null])
-      .join('svg')
+      .join('svg') 
       .attr('width', '100vh')
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
+      .attr('class','axis')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     
@@ -72,11 +73,16 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
 
     const yAxis = d3.axisLeft(yScale);
 
+    
+
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
+      .attr('class', 'axis')
+      .attr('id', 'x-axis')
       .call(xAxis);
 
     svg.append('g')
+      .attr('class', 'axis')
       .call(yAxis);
 
     
@@ -106,6 +112,7 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
     const brush = d3.brushX()
       .extent([[0, 0], [width, height]])
       .on('start', () => {
+ 
         //setSelectedRange(null);
       })
       .on('brush', ({ selection }) => {
@@ -133,7 +140,7 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
             startDate: xScale.invert(selection[0]).toISOString(),
             endDate: xScale.invert(selection[1]).toISOString()
           })
-
+          d3.selectAll('g.brush').remove()
         }
       });
 
