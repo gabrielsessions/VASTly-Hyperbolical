@@ -49,6 +49,11 @@ function RunButton(props){
 }
 
 function RefreshButton(props){
+
+  function resetCheckboxes(props) {
+    ;
+  }
+
   function handleClick(){
     props.setFilters((prev)=>{
       const newFilters = {...prev};
@@ -57,6 +62,10 @@ function RefreshButton(props){
 
       return newFilters
     });
+    props.setCheckboxes((prev)=>{
+      let newCheckboxes = [...props.checkboxes];
+      newCheckboxes = Array.from(newCheckboxes, () => false);
+      return newCheckboxes });
   }
 
   return (
@@ -74,6 +83,8 @@ function CheckboxGroup(props) {
     newCheckboxes[index] = !newCheckboxes[index];
     return newCheckboxes });
   }
+
+
 
   return (
         <div className="checks">
@@ -265,7 +276,7 @@ return (
         <CheckboxGroup checkboxes={checkboxes} setCheckboxes={setCheckboxes}/>
         <br />
         <div className='buttons'> 
-          <RefreshButton setFilters={props.setFilters}/>
+          <RefreshButton setFilters={props.setFilters} checkboxes={checkboxes} setCheckboxes={setCheckboxes}/>
           <br />
           <RunButton checkboxes={checkboxes} setFilters={props.setFilters}/>
         </div>
