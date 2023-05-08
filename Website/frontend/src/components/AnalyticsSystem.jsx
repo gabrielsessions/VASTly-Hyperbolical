@@ -138,13 +138,17 @@ export default function AnalyticsSystem() {
   }, [])
 
 
+  const [loaded, setLoaded] = useState(0);
 
   useEffect(() => {
+
     console.log("FILTER: ");
     console.log(filters);
     runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runGraphQuery(generateWhereClause(filters, ["table"]),loaded);
+    setLoaded(1);
 
 
   }, [filters])
@@ -177,6 +181,23 @@ export default function AnalyticsSystem() {
     if (where === initWhere)
       return " ";
     return where + " ";
+  }
+
+  function runGraphQuery(where, loaded) {
+    if (loaded != 0) {
+
+      const base = "SELECT * from sensor_data as sensor";
+      const query = base + where
+      console.log("Graph Query");
+      console.log(query);
+      executeQuery(query, (res) => {
+        setGraphQuery({
+          sqlQuery: query,
+          data: res.rows,
+          fields: res.fields
+        })
+      })
+    }
   }
 
   function runTSNEQuery(where) {
