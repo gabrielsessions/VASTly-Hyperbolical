@@ -34,8 +34,8 @@ function RunButton(props){
     }
     console.log(filterClause)
     props.setFilters((prev)=>{
-      const newFilters = {...props.filters};
-      newFilters["TSNE"] = filterClause
+      const newFilters = {...prev};
+      newFilters["TSNE"] = [filterClause];
       return newFilters
     });
   }
