@@ -44,8 +44,10 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
     const width = window.innerWidth / 2 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    d3.selectAll('g').remove();
+
     d3.selectAll('.line').remove();
+    
+
     const svg = d3.select(svgRef.current)
       .selectAll('svg')
       .data([null])
