@@ -104,7 +104,7 @@ export default function DataTable(props) {
 
   /** send selected data from selected car id to graph query */
 
-  // console.log(props.tableQuery.fields);
+  console.log(props.tableQuery.fields);
 
 
   return (
@@ -114,7 +114,7 @@ export default function DataTable(props) {
     
         <div class = "h-96 overflow-y-auto" > 
         
-        <SimpleTable data = {props.tableQuery.data} executeQuery={props.executeQuery} fields = {['carid', 'cartype', 'cluster', 'first_entry', 'last_exit']} getChosenRowData = {getChosenRowData} setFilters={props.setFilters}/>
+        <SimpleTable data = {props.tableQuery.data} executeQuery={props.executeQuery} fields = {props.tableQuery.fields.map((e) => e.name)} getChosenRowData = {getChosenRowData} setFilters={props.setFilters}/>
         
         </div> 
         

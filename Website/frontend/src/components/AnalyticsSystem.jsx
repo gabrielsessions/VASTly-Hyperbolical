@@ -31,6 +31,7 @@ export default function AnalyticsSystem() {
   })
 
   function executeQuery(query, callback) {
+    console.log("QUERY: ", query)
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
     }))
@@ -67,8 +68,6 @@ export default function AnalyticsSystem() {
         data: res.rows,
         fields: res.fields
       });
-      // console.log(res.fields)
-      // console.log(res.rows)
     });
   }
 
@@ -95,7 +94,6 @@ export default function AnalyticsSystem() {
 
 
     const newTSNEQuery = `SELECT * FROM car_data as car ${whereClause};`;
-    console.log(newTSNEQuery)
 
     executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
@@ -109,13 +107,12 @@ export default function AnalyticsSystem() {
     const newTableQuery = `SELECT car.carid, car.cartype, car.cluster, 
     TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
     AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
-    AS last_entry
+    AS last_exit
     FROM car_data as car 
     JOIN sensor_data as sensor ON car.carid = sensor.carid  ${whereClause} 
     GROUP BY car.carid, car.cartype, car.cluster 
     ORDER BY car.carid  
     LIMIT 100;`;
-    // console.log(newTableQuery)
     executeQuery(newTableQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTableQuery({
@@ -133,9 +130,9 @@ export default function AnalyticsSystem() {
   }
 
   useEffect(() => {
-    initialTSNEQuery();
-    initialTableQuery();
-    initialTimelineQuery();
+    //initialTSNEQuery();
+    //initialTableQuery();
+    //initialTimelineQuery();
     initialGraphQuery();
 
   }, [])
@@ -145,20 +142,93 @@ export default function AnalyticsSystem() {
   useEffect(() => {
     console.log("FILTER: ");
     console.log(filters);
+    runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+
 
   }, [filters])
 
+  function generateWhereClause(filters, allowedWheres) {
+    const initWhere = " WHERE ";
+    let where = initWhere;
+    //const whereArrs = Object.values(filters);
+    for (let i = 0; i < allowedWheres.length; i++) {
+      console.log(filters[allowedWheres[i]])
+      for (let j = 0; j < filters[allowedWheres[i]].length; j++) {
+        if (where === initWhere && filters[allowedWheres[i]][j] !== "") {
+          where += " " + filters[allowedWheres[i]][j];
+        }
+        else if (filters[allowedWheres[i]][j] !== ""){
+          where += " AND " + filters[allowedWheres[i]][j];
+        }
+      }
+    }
+    /*
+    console.log(allowedWheres);
+    allowedWheres.forEach(view => {
+      console.log(filters[view], view);
+      filters[view].forEach(element => {
+        
+      });
+      
+    });
+    */
+    if (where === initWhere)
+      return " ";
+    return where + " ";
+  }
 
-  function generateTSNEQuery() {
-    const base = "SELECT * FROM car_data";
+  function runTSNEQuery(where) {
+    const base = "SELECT * FROM car_data as car";
+    const query = base + where
+    console.log(query);
+    executeQuery(query, (res) => {
+      setTSNEQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
 
   }
 
-  function generateTimelineQuery() {
-    const base = "SELECT car.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS car, sensor_data AS sensor";
-    const whereClause = ["car.carid = sensor.carid"];
+  function runTableQuery(where) {
+    const base = `SELECT car.carid, car.cartype, car.cluster, 
+    TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS last_exit
+    FROM car_data as car 
+    JOIN sensor_data as sensor ON car.carid = sensor.carid`;
+    const groupOrderLimit = `GROUP BY car.carid, car.cartype, car.cluster 
+    ORDER BY car.carid  
+    LIMIT 100;`
 
+    const query = base + where + groupOrderLimit;
+    console.log(query);
+    executeQuery(query, (res) => {
+      setTableQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
+  }
+
+  function runTimelineQuery(where) {
+    const base = "SELECT car.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS car, sensor_data AS sensor";
+    const extraWhereClause = "car.carid = sensor.carid";
     const groupOrderBy = "GROUP BY car.cartype, date ORDER BY date;";
+
+    const query = where === " " ? base + where + " WHERE " + extraWhereClause + " " + groupOrderBy: base + where + " AND " + extraWhereClause + " " + groupOrderBy;
+    
+    executeQuery(query, (res) => {
+      setTimelineQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
   }
 
 
