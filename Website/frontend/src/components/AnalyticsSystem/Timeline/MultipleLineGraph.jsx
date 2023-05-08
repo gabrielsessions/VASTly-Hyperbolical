@@ -44,6 +44,8 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
     const width = window.innerWidth / 2 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
+    d3.selectAll('g').remove();
+    d3.selectAll('.line').remove();
     const svg = d3.select(svgRef.current)
       .selectAll('svg')
       .data([null])
@@ -53,11 +55,11 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    
+
     const xScale = d3.scaleTime()
       .range([0, width])
       .domain(d3.extent(data[0].values, d => new Date(d.date)));
-
-
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
