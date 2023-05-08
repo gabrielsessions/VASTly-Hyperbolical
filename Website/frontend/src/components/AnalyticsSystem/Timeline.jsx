@@ -60,7 +60,7 @@ export default function Timeline(props) {
   }, [props.timelineQuery])
   
   return (
-    <div>
+    <div class="liney">
      <MultipleLineGraph data={data} setTimeRange={setTimeRange} />
     </div>
   )

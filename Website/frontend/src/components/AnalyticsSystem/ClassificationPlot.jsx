@@ -32,10 +32,12 @@ function RunButton(props){
     if (Array.isArray(clusters) && clusters.length > 0) {
       filterClause = `car.cluster IN (${clusters.map((item) => `${item}`).join(", ")})`;
     }
+    
     console.log(filterClause)
     props.setFilters((prev)=>{
       const newFilters = {...prev};
       newFilters["TSNE"] = [filterClause];
+
       return newFilters
     });
   }
