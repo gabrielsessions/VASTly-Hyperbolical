@@ -22,6 +22,15 @@ export default function Timeline(props) {
     })
   }
 
+  function selectCarType(carType) {
+    props.setFilters((prev) => {
+      const newFilters = {...prev};
+      console.log(prev);
+      newFilters.timeline[2] = "car.cartype='"+ carType + "'";
+      return newFilters;
+    })
+  } 
+
   const typeMap = {
     "1": 0,
     "2": 1,
@@ -60,8 +69,9 @@ export default function Timeline(props) {
   }, [props.timelineQuery])
   
   return (
+
     <div class="liney">
-     <MultipleLineGraph data={data} setTimeRange={setTimeRange} />
+     <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType} />
     </div>
   )
 }
