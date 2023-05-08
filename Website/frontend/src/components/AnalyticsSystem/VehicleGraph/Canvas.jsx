@@ -31,8 +31,9 @@ export default function Canvas(props) {
       setEdges(newEdges);
     }
     else {
-      setDefaultEdges(initialEdges);
-      setEdges(initialEdges);
+      console.log("Initial!");
+      setDefaultEdges(default_paths);
+      setEdges(default_paths);
     }
   }, [props.graphQuery])
 
@@ -55,14 +56,31 @@ export default function Canvas(props) {
             })
 
             let sumOfCounts = 0;
-            newEdges.forEach(elem => {
-              sumOfCounts += elem.count;
-            });
+            if (props.graphQuery.sqlQuery === "") {
+              newEdges.forEach(elem => {
+                sumOfCounts += elem.count;
+              });
+            }
+            else {
+              sumOfCounts = [];
+              newEdges.forEach(elem => {
+                sumOfCounts.push(elem.count);
+              })
+            }
+            
 
             setDisplayText(
               <div>
                 <p>{node.id}</p>
-                <p># of Vehicles: {sumOfCounts}</p>
+                {
+                  props.graphQuery.sqlQuery === "" ?
+                  <p># of Vehicles: {sumOfCounts}</p> :
+                  sumOfCounts.map((elem, i) => {
+                    const timestamp = new Date(elem);
+                    return (<p key={i}>{timestamp.toLocaleTimeString()}</p>)
+                  })
+                }
+                
               </div>
             );
 
@@ -74,8 +92,23 @@ export default function Canvas(props) {
           setDisplayText(
             <div>
               <p>{edge.source} to</p>
-              <p className='mb-2'>{edge.target}</p>
-              <p># of Vehicles: {edge.count}</p>
+              
+              {
+                props.graphQuery.sqlQuery !== "" ?
+                <p className='mb-2'>{edge.target}</p>:
+                
+                  (edge.count).map((elem, index) => {
+                    const timestamp = new Date(elem);
+                    const timestampString = timestamp.toLocaleTimeString();
+                    return  <p class={"block"}key={index}>{timestampString}</p>
+                      
+                    
+                  }
+                    
+                  )
+                
+              }
+              
             </div>
           );
         }}
@@ -99,14 +132,15 @@ export default function Canvas(props) {
 
 
         </div>
-        {/*
+        {
         <ControlButtons
           reset={() => {
-            setEdges(defaultEdges);
+            setEdges(initialEdges);
+            setDefaultEdges(initialEdges)
             setDisplayText("");
           }}
         />
-        */}
+        }
       </ReactFlow>
     </div>
   );

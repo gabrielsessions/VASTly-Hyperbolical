@@ -68,7 +68,7 @@ const MultipleLinePlot = ({ data, setTimeRange }) => {
       .domain([0, d3.max(data, d => d3.max(d.values, v => v.value))]);
 
     const xAxis = d3.axisBottom(xScale)
-      .tickFormat(d3.timeFormat('%Y-%m'));
+      .tickFormat(d3.timeFormat('%Y-%m-%d'));
 
     const yAxis = d3.axisLeft(yScale);
 

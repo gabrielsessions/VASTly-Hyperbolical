@@ -131,6 +131,12 @@ export default function AnalyticsSystem() {
   const [loaded, setLoaded] = useState(0);
 
   useEffect(() => {
+    setGraphQuery({
+      sqlQuery: "",
+      data: "",
+      fields: ""
+    })
+
     runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
@@ -161,8 +167,9 @@ export default function AnalyticsSystem() {
 
 
   function runGraphQuery(where, loaded) {
-    if (loaded >= 2) {
+    if (loaded >= 2 && where !== " ") {
 
+      console.log(where);
       const base = "SELECT * from sensor_data as sensor";
       const order = "ORDER BY carid, timestamp";
       const query = base + where + order
@@ -244,8 +251,7 @@ export default function AnalyticsSystem() {
           </div>
         </div>
         <div>
-          
-          <div  style={{height: '70vh'}}>
+          <div style={{height: '70vh'}}>
             <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE} setFilters={setFilters} />
           </div>
         </div>
