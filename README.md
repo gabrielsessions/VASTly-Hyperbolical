@@ -7,8 +7,9 @@ Tufts CS 178: Visual Analytics Final Project
 The goal was to develop a visual analytics solution to solve the 2017 VAST Challenge: Mini-Challenge 1.
 
 ## Architecture
-- Frontend: React, 
+- Frontend: React
 - Backend: Node.js, PostgreSQL
+- Preliminary Data Analysis: Python
 
 ## How to setup the project
 0. Download/Install Node.js
