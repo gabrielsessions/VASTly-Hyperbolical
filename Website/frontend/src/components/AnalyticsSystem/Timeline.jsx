@@ -62,7 +62,8 @@ export default function Timeline(props) {
       newData[typeMap[element["cartype"]]].values.push({
         date: newDate,
         cartype: element.cartype,
-        value: parseInt(element.count)
+        value: parseInt(element.count),
+        color: typeMap[element["cartype"]]
       })
     });
     setData(newData);
@@ -71,7 +72,7 @@ export default function Timeline(props) {
   return (
 
     <div class="liney">
-     <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType} />
+     <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType}/>
     </div>
   )
 }

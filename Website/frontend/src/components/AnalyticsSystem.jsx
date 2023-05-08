@@ -152,10 +152,10 @@ export default function AnalyticsSystem() {
     //const whereArrs = Object.values(filters);
     for (let i = 0; i < allowedWheres.length; i++) {
       for (let j = 0; j < filters[allowedWheres[i]].length; j++) {
-        if (where === initWhere && filters[allowedWheres[i]][j] !== "") {
+        if (where === initWhere && filters[allowedWheres[i]][j] && filters[allowedWheres[i]][j] !== "") {
           where += " " + filters[allowedWheres[i]][j];
         }
-        else if (filters[allowedWheres[i]][j] !== ""){
+        else if (filters[allowedWheres[i]][j] && filters[allowedWheres[i]][j] !== ""){
           where += " AND " + filters[allowedWheres[i]][j];
         }
       }

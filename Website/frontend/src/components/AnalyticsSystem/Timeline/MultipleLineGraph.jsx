@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 
 function brushed() {
@@ -21,8 +21,21 @@ const carTypeNameToNum = {
   "3 Axle Bus": "6"
 }
 
+const carTypeToIndex = {
+  "2 Axle Car": 0,
+  "2 Axle Truck": 1,
+  "2 Axle Park Truck": 2,
+  "3 Axle Truck": 3,
+  "4+ Axle Truck": 4,
+  "2 Axle Bus": 5,
+  "3 Axle Bus": 6
+}
+
 const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
   const svgRef = useRef();
+
+  const [carSelection, setCarSelection] = useState(0);
+
 
   useEffect(() => {
     const margin = { top: 50, right: 50, bottom: 50, left: 50 };
@@ -47,7 +60,7 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
 
     const xScale = d3.scaleTime()
       .range([0, width])
-      .domain(d3.extent(data[0].values, d => new Date(d.date)));
+      .domain(d3.extent(data[carSelection].values, d => new Date(d.date)));
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
@@ -137,17 +150,20 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
       .x(d => xScale(new Date(d.date)))
       .y(d => yScale(d.value));
 
+    console.log("Hello!");
     svg.selectAll('.line')
       .data(data)
       .join('path')
       .attr('class', 'line')
       .attr('d', d => line(d.values))
-      .style('stroke', (d, i) => d3.schemeCategory10[i])
+      .style('stroke', (d, i) => d.color)
       .style('stroke-width', 2)
       .style('fill', 'none')
       .on('click', (e, i) => {
         console.log(carTypeNameToNum[i.name]);
+        setCarSelection(carTypeToIndex[i.name]);
         selectCarType(carTypeNameToNum[i.name]);
+        
       });
 
     // Add legend
