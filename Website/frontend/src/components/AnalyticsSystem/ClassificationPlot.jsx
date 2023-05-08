@@ -48,6 +48,24 @@ function RunButton(props){
   )
 }
 
+function RefreshButton(props){
+  function handleClick(){
+    props.setFilters((prev)=>{
+      const newFilters = {...prev};
+      newFilters["TSNE"] = [];
+      newFilters["timeline"] = [];
+
+      return newFilters
+    });
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md"> &#10226; </button>
+    </div>
+  )
+}
+
 function CheckboxGroup(props) {
 
   function handleCheckboxChange(index) {
@@ -247,11 +265,9 @@ return (
         <CheckboxGroup checkboxes={checkboxes} setCheckboxes={setCheckboxes}/>
         <br />
         <div className='buttons'> 
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
-            &#10226;
-          </button>
+          <RefreshButton setFilters={props.setFilters}/>
           <br />
-          <RunButton interTSNE ={props.interTSNE} checkboxes={checkboxes} setFilters={props.setFilters}/>
+          <RunButton checkboxes={checkboxes} setFilters={props.setFilters}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>
