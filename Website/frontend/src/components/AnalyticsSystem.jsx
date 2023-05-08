@@ -125,17 +125,7 @@ export default function AnalyticsSystem() {
 
   } 
 
-  function initialGraphQuery() {
 
-  }
-
-  useEffect(() => {
-    //initialTSNEQuery();
-    //initialTableQuery();
-    //initialTimelineQuery();
-    initialGraphQuery();
-
-  }, [])
 
 
   const [loaded, setLoaded] = useState(0);
@@ -144,8 +134,8 @@ export default function AnalyticsSystem() {
     runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
     runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
-    runGraphQuery(generateWhereClause(filters, ["table"]),loaded);
-    setLoaded(1);
+    runGraphQuery(generateWhereClause(filters, ["table"]), loaded);
+    setLoaded((prev) => prev + 1);
 
 
   }, [filters])
@@ -169,11 +159,15 @@ export default function AnalyticsSystem() {
     return where + " ";
   }
 
+
   function runGraphQuery(where, loaded) {
-    if (loaded != 0) {
+    if (loaded >= 2) {
 
       const base = "SELECT * from sensor_data as sensor";
-      const query = base + where
+      const order = "ORDER BY carid, timestamp";
+      const query = base + where + order
+      
+
       console.log("Graph Query");
       console.log(query);
       executeQuery(query, (res) => {
@@ -185,6 +179,7 @@ export default function AnalyticsSystem() {
       })
     }
   }
+
 
   function runTSNEQuery(where) {
     const base = "SELECT DISTINCT car.carid, car.cluster, car.cartype, car.xcoord, car.ycoord FROM car_data as car NATURAL JOIN sensor_data AS sensor";
