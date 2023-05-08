@@ -72,7 +72,7 @@ export default function Timeline(props) {
   return (
 
     <div class="liney">
-     <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType}/>
+     <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType} clearGraphQuery={props.clearGraphQuery}/>
     </div>
   )
 }

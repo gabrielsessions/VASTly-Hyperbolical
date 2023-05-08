@@ -59,7 +59,7 @@ export default function AnalyticsSystem() {
   // a where statement will be updated with a global variable with selected options
   // WHERE car.cluster = selectedCheckBoxes
   // WHERE car.cartype = selectedLine
-   
+
   function initialTableQuery() {
     const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_exit FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 100;"
     executeQuery(initTableQuery, (res) => {
@@ -83,9 +83,9 @@ export default function AnalyticsSystem() {
       });
     });
   }
-  
 
-   function interTSNE(array){
+
+  function interTSNE(array) {
     let whereClause = "";
 
     if (Array.isArray(array) && array.length > 0) {
@@ -123,7 +123,7 @@ export default function AnalyticsSystem() {
     });
 
 
-  } 
+  }
 
 
 
@@ -155,7 +155,7 @@ export default function AnalyticsSystem() {
         if (where === initWhere && filters[allowedWheres[i]][j] && filters[allowedWheres[i]][j] !== "") {
           where += " " + filters[allowedWheres[i]][j];
         }
-        else if (filters[allowedWheres[i]][j] && filters[allowedWheres[i]][j] !== ""){
+        else if (filters[allowedWheres[i]][j] && filters[allowedWheres[i]][j] !== "") {
           where += " AND " + filters[allowedWheres[i]][j];
         }
       }
@@ -173,7 +173,7 @@ export default function AnalyticsSystem() {
       const base = "SELECT * from sensor_data as sensor";
       const order = "ORDER BY carid, timestamp";
       const query = base + where + order
-      
+
 
       console.log("Graph Query");
       console.log(query);
@@ -227,14 +227,22 @@ export default function AnalyticsSystem() {
     const extraWhereClause = "car.carid = sensor.carid";
     const groupOrderBy = "GROUP BY car.cartype, date ORDER BY date;";
 
-    const query = where === " " ? base + where + " WHERE " + extraWhereClause + " " + groupOrderBy: base + where + " AND " + extraWhereClause + " " + groupOrderBy;
-    
+    const query = where === " " ? base + where + " WHERE " + extraWhereClause + " " + groupOrderBy : base + where + " AND " + extraWhereClause + " " + groupOrderBy;
+
     executeQuery(query, (res) => {
       setTimelineQuery({
         sqlQuery: query,
         data: res.rows,
         fields: res.fields
       })
+    })
+  }
+
+  function clearGraphQuery() {
+    setGraphQuery({
+      sqlQuery: "",
+      data: "",
+      fields: ""
     })
   }
 
@@ -246,22 +254,22 @@ export default function AnalyticsSystem() {
     <div className="min-h-screen max-h-screen">
       <div className="md:grid md:grid-cols-2">
         <div>
-          <div style={{height: '70vh'}}>
-            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} setFilters={setFilters} />
+          <div style={{ height: '70vh' }}>
+            <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} setFilters={setFilters} clearGraphQuery={clearGraphQuery} />
           </div>
         </div>
         <div>
-          <div style={{height: '70vh'}}>
+          <div style={{ height: '70vh' }}>
             <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          <div style={{height: '60vh'}}>
+          <div style={{ height: '60vh' }}>
             <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          <div style={{height: '60vh'}}>
+          <div style={{ height: '60vh' }}>
             <Timeline timelineQuery={timelineQuery} setFilters={setFilters} />
           </div>
         </div>
