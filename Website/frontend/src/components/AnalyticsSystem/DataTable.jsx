@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 */
 
 const fields = [ 
-  'carid', 'cartype', 'cluster', 'first_entry', 'last_entry'
+  'carid', 'cartype', 'cluster', 'first_entry', 'last_exit'
  ];
 
 /** dummy data - key matches field, values are json objects 
@@ -60,15 +60,17 @@ export default function DataTable(props) {
   const [selectedRowData, setSelectedRowData] = useState("");
   const getChosenRowData = selectedRow => {
     setSelectedRowData(selectedRow);
+
   };
+  
       
   var queryTemplate = "SELECT sensor.gatename, sensor.Timestamp, sensor.carid FROM sensor_data AS sensor WHERE sensor.carid = setSelectedRowData ORDER BY sensor.carid, sensor.TimeStamp ASC"
 
-  var queryOne = "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
+  var queryOne = "SELECT car.carid, car.cartype, car.cluster, MIN(sensor.timestamp) AS first_entry, MAX(sensor.timestamp) AS last_exit FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster LIMIT 50"
 
   var dummyData = "SELECT * FROM sensor_data AS sensor LIMIT 50"
 
-  var queryTwo = `SELECT * FROM sensor_data AS sensor WHERE sensor.carid = '${getChosenRowData}'`
+  // var queryTwo = `SELECT * FROM sensor_data AS sensor WHERE sensor.carid = '${getChosenRowData}'`
 
   /*
   function getResult(res) {
@@ -88,21 +90,13 @@ export default function DataTable(props) {
       fields: res.fields
       
     });
-    console.log(res)
   }
-
-  /** define new function, use it as callback to execute query */
-  useEffect(() => {
-    console.log(props.tableQuery.data)
-    //props.executeQuery(queryOne, getResult);
-  }, [props.tableQuery])
 
     /** update function to state of graphQuery function */
 
 
   /** send selected data from selected car id to graph query */
 
-  console.log(props.tableQuery.fields);
 
 
   return (
@@ -112,7 +106,7 @@ export default function DataTable(props) {
     
         <div class = "h-96 overflow-y-auto" > 
         
-        <SimpleTable data = {props.tableQuery.data} fields = {['carid', 'cartype', 'cluster', 'first_entry', 'last_entry']} getChosenRowData = {getChosenRowData} />
+        <SimpleTable data = {props.tableQuery.data} executeQuery={props.executeQuery} fields = {props.tableQuery.fields.map((e) => e.name)} getChosenRowData = {getChosenRowData} setFilters={props.setFilters}/>
         
         </div> 
         

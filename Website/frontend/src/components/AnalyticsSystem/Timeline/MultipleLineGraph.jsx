@@ -29,39 +29,43 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
     const width = window.innerWidth / 2 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
+
+    d3.selectAll('.line').remove();
+    d3.selectAll(".axis").remove();
+
     const svg = d3.select(svgRef.current)
       .selectAll('svg')
       .data([null])
-      .join('svg')
+      .join('svg') 
       .attr('width', '100vh')
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
+      .attr('class','axis')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    
 
     const xScale = d3.scaleTime()
       .range([0, width])
       .domain(d3.extent(data[0].values, d => new Date(d.date)));
-
-
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
       .domain([0, d3.max(data, d => d3.max(d.values, v => v.value))]);
 
     const xAxis = d3.axisBottom(xScale)
-      .tickFormat(d3.timeFormat('%Y-%m'));
+      .tickFormat(d3.timeFormat('%Y-%m-%d'));
 
     const yAxis = d3.axisLeft(yScale);
-<<<<<<< Updated upstream
-
-=======
     
->>>>>>> Stashed changes
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
+      .attr('class', 'axis')
+      .attr('id', 'x-axis')
       .call(xAxis);
 
     svg.append('g')
+      .attr('class', 'axis')
       .call(yAxis);
 
     
@@ -91,6 +95,7 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
     const brush = d3.brushX()
       .extent([[0, 0], [width, height]])
       .on('start', () => {
+ 
         //setSelectedRange(null);
       })
       .on('brush', ({ selection }) => {
@@ -113,18 +118,12 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
         }
       })
       .on('end', ({ selection }) => {
-        console.log(selection);
-        console.log(!selection)
         if (selection) {
-          console.log(xScale.invert(selection[0]))
-          console.log(xScale.invert(selection[1]))
-          //setSelectedRange(null);
-          //updateChart(data);
           setTimeRange({
             startDate: xScale.invert(selection[0]).toISOString(),
             endDate: xScale.invert(selection[1]).toISOString()
           })
-
+          d3.selectAll('g.brush').remove()
         }
       });
 
@@ -177,8 +176,8 @@ const MultipleLinePlot = ({ data, setTimeRange, selectCarType }) => {
   }, [data]);
 
   return (
-    <div>
-      <div ref={svgRef}></div>
+    <div class="liney">
+      <svg ref={svgRef} className="lineplot"></svg>
     </div>
   );
 };

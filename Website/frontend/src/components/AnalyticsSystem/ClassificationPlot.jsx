@@ -26,10 +26,17 @@ function RunButton(props){
       (acc, val, index) => (val ? acc.concat(index-1) : acc),
       []
     );
-    console.log(clusters)
+  
+    let filterClause = "";
+
+    if (Array.isArray(clusters) && clusters.length > 0) {
+      filterClause = `car.cluster IN (${clusters.map((item) => `${item}`).join(", ")})`;
+    }
+
     props.setFilters((prev)=>{
-      const newFilters = [...props.filters];
-      newFilters[tsne] = clusters
+      const newFilters = {...prev};
+      newFilters["TSNE"] = [filterClause];
+
       return newFilters
     });
   }
@@ -37,6 +44,24 @@ function RunButton(props){
   return (
     <div>
       <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">Run</button>
+    </div>
+  )
+}
+
+function RefreshButton(props){
+  function handleClick(){
+    props.setFilters((prev)=>{
+      const newFilters = {...prev};
+      newFilters["TSNE"] = [];
+      newFilters["timeline"] = [];
+
+      return newFilters
+    });
+  }
+
+  return (
+    <div>
+      <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md"> &#10226; </button>
     </div>
   )
 }
@@ -116,7 +141,7 @@ function colorRecode(color){
 
 export default function ClassificationPlot(props) {
   const [checkboxes, setCheckboxes] = useState(
-    new Array(20).fill(true)
+    new Array(20).fill(false)
   );
 
   const svgRef = useRef();
@@ -205,7 +230,7 @@ export default function ClassificationPlot(props) {
       .selectAll(".dot")
       .data(data)
       .join(
-        enter =>{console.log("enter");
+        enter =>{
         return enter.append("path")
           .attr("class", "dot")
           .attr("opacity", determineDotOpacity(data.length))
@@ -240,11 +265,9 @@ return (
         <CheckboxGroup checkboxes={checkboxes} setCheckboxes={setCheckboxes}/>
         <br />
         <div className='buttons'> 
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
-            &#10226;
-          </button>
+          <RefreshButton setFilters={props.setFilters}/>
           <br />
-          <RunButton interTSNE ={props.interTSNE} checkboxes={checkboxes}/>
+          <RunButton checkboxes={checkboxes} setFilters={props.setFilters}/>
         </div>
         <div className="symbology">
           <h1>&#x25CF; 2 axle car</h1>

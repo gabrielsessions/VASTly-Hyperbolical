@@ -37,8 +37,16 @@ export default function SimpleTable(props) {
             {
               props.data.map((elem, index) => {
                 return (
-                  <tr onClick={() => props.executeQuery(props.queryTwo, props.getGraphResult)} class="hover:bg-gray-200">
-                  
+                  // set filter
+                  // deep copy of set filter w/ ...
+                  // update first element of table area 
+                  // update w/ car.carid = ____
+                  <tr onClick={() => props.setFilters((prev) => {
+                    const newFilters = {...prev};
+                    newFilters["table"] = ["carid = '" +(elem["carid"]) + "'"]
+                    return newFilters
+                  })} class="hover:bg-gray-200">
+                    
                     {
                       props.fields.map((rowElem, colIndex) => {
                         // Make timestamps readable

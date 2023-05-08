@@ -24,13 +24,14 @@ export default function AnalyticsSystem() {
   const [graphQuery, setGraphQuery] = useState(initialQuery);
   const [filters, setFilters] = useState({
 
-    tsne: [-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    TSNE: [],
     timeline: ["", "", ""],
     table: [],
     graph: []
   })
 
   function executeQuery(query, callback) {
+    console.log("QUERY: ", query)
     fetch('http://localhost:3001/dbtest/query?' + new URLSearchParams({
       sqlQuery: query
     }))
@@ -60,16 +61,13 @@ export default function AnalyticsSystem() {
   // WHERE car.cartype = selectedLine
    
   function initialTableQuery() {
-
-    const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_entry FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 12;"
+    const initTableQuery = "SELECT car.carid, car.cartype, car.cluster, TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') AS last_exit FROM car_data as car JOIN sensor_data as sensor ON car.carid = sensor.carid GROUP BY car.carid, car.cartype, car.cluster ORDER BY car.carid  LIMIT 100;"
     executeQuery(initTableQuery, (res) => {
       setTableQuery({
         sqlQuery: initTableQuery,
         data: res.rows,
         fields: res.fields
       });
-      console.log(res.fields)
-      console.log(res.rows)
     });
   }
 
@@ -85,6 +83,7 @@ export default function AnalyticsSystem() {
       });
     });
   }
+  
 
    function interTSNE(array){
     let whereClause = "";
@@ -93,8 +92,9 @@ export default function AnalyticsSystem() {
       whereClause = `WHERE cluster IN (${array.map((item) => `${item}`).join(", ")})`;
     }
 
-    const newTSNEQuery = `SELECT * FROM car_data ${whereClause};`;
-    console.log(newTSNEQuery)
+
+    const newTSNEQuery = `SELECT * FROM car_data as car ${whereClause};`;
+
     executeQuery(newTSNEQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTSNEQuery({
@@ -107,13 +107,12 @@ export default function AnalyticsSystem() {
     const newTableQuery = `SELECT car.carid, car.cartype, car.cluster, 
     TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
     AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
-    AS last_entry
+    AS last_exit
     FROM car_data as car 
     JOIN sensor_data as sensor ON car.carid = sensor.carid  ${whereClause} 
     GROUP BY car.carid, car.cartype, car.cluster 
     ORDER BY car.carid  
     LIMIT 100;`;
-    console.log(newTableQuery)
     executeQuery(newTableQuery, (res) => {
       const newFields = res.fields.map((e) => e.name);
       setTableQuery({
@@ -126,36 +125,117 @@ export default function AnalyticsSystem() {
 
   } 
 
-  function initialGraphQuery() {
 
-  }
 
-  useEffect(() => {
-    initialTSNEQuery();
-    initialTableQuery();
-    initialTimelineQuery();
-    initialGraphQuery();
 
-  }, [])
-
+  const [loaded, setLoaded] = useState(0);
 
   useEffect(() => {
-    console.log("FILTER: ");
-    console.log(filters);
+    setGraphQuery({
+      sqlQuery: "",
+      data: "",
+      fields: ""
+    })
+
+    runTSNEQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runTableQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runTimelineQuery(generateWhereClause(filters, ["TSNE", "timeline"]));
+    runGraphQuery(generateWhereClause(filters, ["table"]), loaded);
+    setLoaded((prev) => prev + 1);
+
 
   }, [filters])
 
+  function generateWhereClause(filters, allowedWheres) {
+    const initWhere = " WHERE ";
+    let where = initWhere;
+    //const whereArrs = Object.values(filters);
+    for (let i = 0; i < allowedWheres.length; i++) {
+      for (let j = 0; j < filters[allowedWheres[i]].length; j++) {
+        if (where === initWhere && filters[allowedWheres[i]][j] !== "") {
+          where += " " + filters[allowedWheres[i]][j];
+        }
+        else if (filters[allowedWheres[i]][j] !== ""){
+          where += " AND " + filters[allowedWheres[i]][j];
+        }
+      }
+    }
+    if (where === initWhere)
+      return " ";
+    return where + " ";
+  }
 
-  function generateTSNEQuery() {
-    const base = "SELECT * FROM car_data";
+
+  function runGraphQuery(where, loaded) {
+    if (loaded >= 2 && where !== " ") {
+
+      console.log(where);
+      const base = "SELECT * from sensor_data as sensor";
+      const order = "ORDER BY carid, timestamp";
+      const query = base + where + order
+      
+
+      console.log("Graph Query");
+      console.log(query);
+      executeQuery(query, (res) => {
+        setGraphQuery({
+          sqlQuery: query,
+          data: res.rows,
+          fields: res.fields
+        })
+      })
+    }
+  }
+
+
+  function runTSNEQuery(where) {
+    const base = "SELECT DISTINCT car.carid, car.cluster, car.cartype, car.xcoord, car.ycoord FROM car_data as car NATURAL JOIN sensor_data AS sensor";
+    const query = base + where
+    executeQuery(query, (res) => {
+      setTSNEQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
 
   }
 
-  function generateTimelineQuery() {
-    const base = "SELECT car.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS car, sensor_data AS sensor";
-    const whereClause = ["car.carid = sensor.carid"];
+  function runTableQuery(where) {
+    const base = `SELECT car.carid, car.cartype, car.cluster, 
+    TO_CHAR(MIN(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS first_entry, TO_CHAR(MAX(sensor.timestamp), 'MM/DD/YY HH:MI:SS AM') 
+    AS last_exit
+    FROM car_data as car 
+    JOIN sensor_data as sensor ON car.carid = sensor.carid`;
+    const groupOrderLimit = `GROUP BY car.carid, car.cartype, car.cluster 
+    ORDER BY car.carid  
+    LIMIT 100;`
 
+    const query = base + where + groupOrderLimit;
+    executeQuery(query, (res) => {
+      setTableQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
+  }
+
+  function runTimelineQuery(where) {
+    const base = "SELECT car.cartype, DATE(timestamp) AS date, COUNT(*) FROM car_data AS car, sensor_data AS sensor";
+    const extraWhereClause = "car.carid = sensor.carid";
     const groupOrderBy = "GROUP BY car.cartype, date ORDER BY date;";
+
+    const query = where === " " ? base + where + " WHERE " + extraWhereClause + " " + groupOrderBy: base + where + " AND " + extraWhereClause + " " + groupOrderBy;
+    
+    executeQuery(query, (res) => {
+      setTimelineQuery({
+        sqlQuery: query,
+        data: res.rows,
+        fields: res.fields
+      })
+    })
   }
 
 
@@ -166,23 +246,22 @@ export default function AnalyticsSystem() {
     <div className="min-h-screen max-h-screen">
       <div className="md:grid md:grid-cols-2">
         <div>
-          <div className={analyticsComponentClass}>
+          <div style={{height: '70vh'}}>
             <VehicleMap graphQuery={graphQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          
-          <div className={analyticsComponentClass} style={{height: '70vh'}}>
+          <div style={{height: '70vh'}}>
             <ClassificationPlot TSNEQuery={TSNEQuery} interTSNE={interTSNE} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div style={{height: '60vh'}}>
             <DataTable tableQuery={tableQuery} setTableQuery={setTableQuery} executeQuery={executeQuery} setFilters={setFilters} />
           </div>
         </div>
         <div>
-          <div className={analyticsComponentClass}>
+          <div style={{height: '60vh'}}>
             <Timeline timelineQuery={timelineQuery} setFilters={setFilters} />
           </div>
         </div>

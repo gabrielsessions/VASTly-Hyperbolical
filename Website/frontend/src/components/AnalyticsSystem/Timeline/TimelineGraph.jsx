@@ -54,7 +54,6 @@ const TimelineGraph = ({ data }) => {
 
 
     //data.forEach(element => {
-      console.log(data[0]);
       svg.append("path")
       .datum(new Array(...data[0]))
       .attr("fill", "none")

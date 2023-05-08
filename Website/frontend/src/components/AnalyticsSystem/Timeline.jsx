@@ -15,8 +15,8 @@ export default function Timeline(props) {
     setRange(newObj);
     props.setFilters((prev) => {
       const newFilters = {...prev};
-      newFilters.timeline[0] = "sensor.timestamp" + ">=" + newObj.startDate;
-      newFilters.timeline[1] = "sensor.timestamp" + "<=" + newObj.endDate;
+      newFilters.timeline[0] = "sensor.timestamp" + ">='" + newObj.startDate + "'";
+      newFilters.timeline[1] = "sensor.timestamp" + "<='" + newObj.endDate + "'";
 
       return newFilters;
     })
@@ -69,13 +69,9 @@ export default function Timeline(props) {
   }, [props.timelineQuery])
   
   return (
-<<<<<<< Updated upstream
-    <div>
-     <MultipleLineGraph data={data} setTimeRange={setTimeRange} />
-=======
+
     <div class="liney">
      <MultipleLineGraph data={data} setTimeRange={setTimeRange} selectCarType={selectCarType} />
->>>>>>> Stashed changes
     </div>
   )
 }
