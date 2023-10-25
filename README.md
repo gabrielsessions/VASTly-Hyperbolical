@@ -4,7 +4,7 @@ Tufts CS 178: Visual Analytics Final Project
 
 
 ## About Our Project
-The goal was to develop a visual analytics solution to solve the 2017 VAST Challenge: Mini-Challenge 1.
+The goal was to develop a visual analytics solution to solve the 2017 VAST Challenge: Mini-Challenge 1. See our [slides](https://github.com/gabrielsessions/VASTly-Hyperbolical/blob/main/CS%20178%20Final%20Project%20-1.pdf) for a more complete overview.
 
 ## Architecture
 - Frontend: React
